@@ -157,4 +157,9 @@ class Staff extends Authenticatable
     {
         return $this->hasMany(SavedSearch::class);
     }
+
+    public function brand()
+    {
+        return $this->belongTo(\Lunar\Models\Brand::class);
+    }
 }
