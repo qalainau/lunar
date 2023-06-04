@@ -96,6 +96,13 @@ use Lunar\Hub\Http\Livewire\Components\Settings\Product\Options\OptionValueEdit;
 use Lunar\Hub\Http\Livewire\Components\Settings\Staff\StaffCreate;
 use Lunar\Hub\Http\Livewire\Components\Settings\Staff\StaffIndex;
 use Lunar\Hub\Http\Livewire\Components\Settings\Staff\StaffShow;
+
+
+use Lunar\Hub\Http\Livewire\Components\Vendors\VendorShow;
+use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsIndex;
+use Lunar\Hub\Http\Livewire\Components\Vendors\VendorCreate;
+use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsTable;
+
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\ActivityLogTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\AddonsTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\AttributesTable;
@@ -265,6 +272,7 @@ class AdminHubServiceProvider extends ServiceProvider
         $this->registerFieldtypeComponents();
         $this->registerDiscountComponents();
         $this->registerDashboardComponents();
+        $this->registerVendorComponents();
 
         // Blade Components
         Blade::componentNamespace('Lunar\\Hub\\Views\\Components', 'hub');
@@ -367,6 +375,21 @@ class AdminHubServiceProvider extends ServiceProvider
         Livewire::component('hub.components.brands.index', BrandsIndex::class);
         Livewire::component('hub.components.brands.table', BrandsTable::class);
         Livewire::component('hub.components.brands.show', BrandShow::class);
+    }
+
+    /**
+     * Register the components used in the vendors area.
+     *
+     * @return void
+     */
+    protected function registerVendorComponents()
+    {
+        Livewire::component('hub.components.vendors.index', VendorsIndex::class);
+       Livewire::component('hub.components.vendors.table', VendorsTable::class);
+        Livewire::component('hub.components.vendors.show', VendorShow::class);
+        Livewire::component('hub.components.vendors.create', VendorCreate::class);
+
+
     }
 
     /**

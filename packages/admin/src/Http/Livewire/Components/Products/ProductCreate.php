@@ -9,6 +9,7 @@ use Lunar\Models\TaxClass;
 
 class ProductCreate extends AbstractProduct
 {
+    public $limitReached = null;
     /**
      * Called when the component is mounted.
      *
@@ -16,9 +17,25 @@ class ProductCreate extends AbstractProduct
      */
     public function mount()
     {
+
+        if(isset(\Auth::user()->brand_id)){
+            //ベンダーは15件のみ登録可能
+            $product_count= Product::where('brand_id', \Auth::user()->brand_id)
+                ->whereNull('deleted_at')->count();
+            ray($product_count);
+            if($product_count>= 15){
+                $this->notify(
+                    '商品は15件のみ登録可能です。',
+                    level: 'error'
+                );
+                $this->limitReached=15;
+            }
+        }
+
         $this->product = new Product([
             'status' => 'draft',
             'product_type_id' => ProductType::first()->id,
+            'brand_id' => \Auth::user()->brand_id,
         ]);
 
         $this->options = collect();
@@ -50,6 +67,7 @@ class ProductCreate extends AbstractProduct
      */
     public function render()
     {
+
         return view('adminhub::livewire.components.products.create')
             ->layout('adminhub::layouts.base');
     }

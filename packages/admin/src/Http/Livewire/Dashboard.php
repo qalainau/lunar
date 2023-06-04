@@ -135,6 +135,44 @@ class Dashboard extends Component
             ->get();
     }
 
+    public function getRecentOrderLinesProperty()
+    {
+//        return OrderLine::leftJoin('products', 'purchasable_id', '=', 'products.id')
+//            ->leftJoin('product_variants', 'purchasable_id', '=', 'product_variants.id')
+//            ->leftJoin('product_variant_options', 'purchasable_id', '=', 'product_variant_options.id')
+//            ->leftJoin('product_variant_option_values', 'purchasable_id', '=', 'product_variant_option_values.id')
+//            ->leftJoin('product_images', 'purchasable_id', '=', 'product_images.id')
+//            ->leftJoin('product_files', 'purchasable_id', '=', 'product_files.id')
+//            ->leftJoin('product_videos', 'purchasable_id', '=', 'product_videos.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->leftJoin('product_downloads', 'purchasable_id', '=', 'product_downloads.id')
+//            ->select([
+//                'order_lines.*',
+//                'products.name as product_name',
+//                'product_variants.name as variant_name',
+//                'product_variant_options.name as option_name',
+//                'product_variant_option_values.name as option_value_name',
+//                'product_images.path as image_path',
+//                'product_files.path as file_path',
+//                'product_videos.path as video_path',
+//                'product_downloads.path as download_path',
+//            ])->orderBy('order_lines.created_at', 'desc')
+//            ->take(6)
+//            ->get();
+                return OrderLine::leftJoin('lunar_products', 'purchasable_id', '=', 'lunar_products.id')
+        ->where('lunar_products.brand_id', \Auth::user()->brand_id)
+            ->orderBy('lunar_order_lines.created_at', 'desc')
+            ->take(6)
+            ->get();
+    }
+
     /**
      * Return the computed property for top selling products.
      *

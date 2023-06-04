@@ -160,6 +160,6 @@ class Staff extends Authenticatable
 
     public function brand()
     {
-        return $this->belongTo(\Lunar\Models\Brand::class);
+        return $this->belongsTo(\Lunar\Models\Brand::class);
     }
 }

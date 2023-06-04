@@ -11,6 +11,14 @@ class ProductShow extends AbstractProduct
      */
     public function mount()
     {
+        if(\Auth::user()->brand_id){
+            //違う販売先のIDの商品にアクセスしたらエラー
+            if($this->product->brand_id !== \Auth::user()->brand_id){
+                abort(403);
+            }
+        }
+
+
         $this->options = collect();
         $this->variantsEnabled = $this->getVariantsCount() > 1;
         $this->variant = $this->product->variants->first();

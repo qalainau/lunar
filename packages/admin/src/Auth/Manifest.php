@@ -104,6 +104,12 @@ class Manifest
                 'settings:manage-staff',
                 __('adminhub::auth.permissions.settings.staff.description')
             ),
+
+            new Permission(
+                __('adminhub::auth.permissions.settings.staff.name'),
+                'vendors:vendors',
+                __('adminhub::auth.permissions.settings.staff.description')
+            ),
             new Permission(
                 __('adminhub::auth.permissions.settings.attributes.name'),
                 'settings:manage-attributes',

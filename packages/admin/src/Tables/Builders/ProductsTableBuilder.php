@@ -18,8 +18,16 @@ class ProductsTableBuilder extends TableBuilder
      */
     public function getData(): iterable
     {
-        $query = Product::orderBy($this->sortField, $this->sortDir)
-            ->withTrashed();
+
+        if(\Auth::user()->brand_id){
+            $query = Product::where('brand_id',\Auth::user()->brand_id)->orderBy($this->sortField, $this->sortDir)
+                ->withTrashed();
+        }
+        else{
+            $query = Product::orderBy($this->sortField, $this->sortDir)
+                ->withTrashed();
+        }
+
 
         if ($this->searchTerm) {
             $query->whereIn('id', Product::search($this->searchTerm)->keys());

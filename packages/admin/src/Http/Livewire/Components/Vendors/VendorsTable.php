@@ -1,6 +1,6 @@
 <?php
 
-namespace Lunar\Hub\Http\Livewire\Components\Settings\Tables;
+namespace Lunar\Hub\Http\Livewire\Components\Vendors;
 
 use Illuminate\Support\Collection;
 use Lunar\Hub\Http\Livewire\Traits\Notifies;
@@ -11,7 +11,7 @@ use Lunar\LivewireTables\Components\Columns\AvatarColumn;
 use Lunar\LivewireTables\Components\Columns\StatusColumn;
 use Lunar\LivewireTables\Components\Columns\TextColumn;
 
-class StaffTable extends LunarTable
+class VendorsTable extends LunarTable
 {
     use Notifies;
 
@@ -52,7 +52,7 @@ class StaffTable extends LunarTable
             TextColumn::make('name', function ($record) {
                 return $record->fullName;
             })->url(function ($record) {
-                return route('hub.staff.show', $record->id);
+                return route('hub.vendors.show', $record->id);
             }),
             TextColumn::make('email'),
         ]);
@@ -130,6 +130,6 @@ class StaffTable extends LunarTable
             $query->search($this->query, true);
         }
 
-        return $query->whereNull('brand_id')->withTrashed()->paginate($this->perPage);
+        return $query->where('brand_id','>',0)->withTrashed()->paginate($this->perPage);
     }
 }

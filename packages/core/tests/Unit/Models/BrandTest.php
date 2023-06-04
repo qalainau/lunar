@@ -2,9 +2,9 @@
 
 namespace Lunar\Tests\Unit\Models;
 
+use App\Generators\UrlGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
-use Lunar\Generators\UrlGenerator;
 use Lunar\Models\Brand;
 use Lunar\Models\Language;
 use Lunar\Models\Url;

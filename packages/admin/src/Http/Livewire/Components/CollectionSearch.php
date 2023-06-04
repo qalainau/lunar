@@ -38,6 +38,9 @@ class CollectionSearch extends Component
      */
     public array $selected = [];
 
+
+
+
     /**
      * {@inheritDoc}
      */
@@ -77,6 +80,8 @@ class CollectionSearch extends Component
     {
         $this->selected = [];
         $this->searchTerm = null;
+        //add by u1
+        $this->getResultsProperty();
     }
 
     /**
@@ -109,16 +114,40 @@ class CollectionSearch extends Component
      */
     public function getResultsProperty()
     {
+        $this->searchTerm='s';
         if (! $this->searchTerm) {
-            return null;
+          // return null;
+            //  return ModelsCollection::where('parent_id','>',0)->get();
         }
+       // return ModelsCollection::where('parent_id','>',0)->get();
+//        return app(Builder::class, [
+//            'model' => new static,
+//            'query' => $query,
+//            'callback' => $callback,
+//            'softDelete'=> static::usesSoftDelete() && config('scout.soft_delete', false),
+//        ]);
 
-        return ModelsCollection::search($this->searchTerm)
+                        return ModelsCollection::search($this->searchTerm)
             ->query(function (Builder $query) {
                 $query->with([
                     'group',
                 ]);
+                $query->where(
+                    'parent_id','>',0
+                );
             })->paginate($this->maxResults);
+//                return ModelsCollection::search($this->searchTerm)
+//            ->query(function (Builder $query) {
+//                $query->with([
+//                    'group',
+//                ]);
+//            })->paginate($this->maxResults);
+//        return ModelsCollection::search($this->searchTerm)
+//            ->query(function (Builder $query) {
+//                $query->with([
+//                    'group',
+//                ]);
+//            })->paginate($this->maxResults);
     }
 
     public function triggerSelect()

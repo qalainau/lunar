@@ -21,5 +21,5 @@ return [
   | ships with Lunar, which by default will use the name attribute.
   |
   */
-    'generator' => Lunar\Generators\UrlGenerator::class,
+    'generator' => \App\Generators\UrlGenerator::class,
 ];

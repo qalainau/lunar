@@ -43,7 +43,7 @@ class LivewireTablesServiceProvider extends ServiceProvider
         Blade::directive('livewireTableStyles', function () {
             $manifest = json_decode(file_get_contents(__DIR__.'/../dist/mix-manifest.json'), true);
 
-            $cssUrl = asset('/vendor/lunar'.$manifest['/livewire-tables/app.css']);
+            $cssUrl = secure_asset('/vendor/lunar'.$manifest['/livewire-tables/app.css']);
 
             return <<<EOT
                 <link rel="stylesheet" href="{$cssUrl}" />

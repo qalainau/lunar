@@ -81,7 +81,8 @@ class ProductsTable extends Table
             })->states(function ($record) {
                 return [
                     'success' => $record->status == 'published' && ! $record->deleted_at,
-                    'warning' => $record->status == 'draft' && ! $record->deleted_at,
+                    'warning' => $record->status == 'request' && ! $record->deleted_at,
+                    'info' => $record->status == 'draft' && ! $record->deleted_at,
                     'danger' => (bool) $record->deleted_at,
                 ];
             }),

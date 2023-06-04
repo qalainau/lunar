@@ -363,6 +363,9 @@ abstract class AbstractProduct extends Component
         $this->validateUrls();
         $isNew = ! $this->product->id;
 
+
+
+
         DB::transaction(function () use ($isNew) {
             $data = $this->prepareAttributeData();
             $variantData = $this->prepareAttributeData($this->variantAttributes);
@@ -503,7 +506,7 @@ abstract class AbstractProduct extends Component
 
             $this->variant = $this->product->variants->first();
 
-            $this->notify('Product Saved');
+            $this->notify('商品を保存しました！');
         });
 
         if ($isNew) {
