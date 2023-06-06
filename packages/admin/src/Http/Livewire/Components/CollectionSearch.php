@@ -47,7 +47,7 @@ class CollectionSearch extends Component
     public function rules()
     {
         return [
-            'searchTerm' => 'required|string|max:255',
+           // 'searchTerm' => 'required|string|max:255',
         ];
     }
 
@@ -82,6 +82,8 @@ class CollectionSearch extends Component
         $this->searchTerm = null;
         //add by u1
         $this->getResultsProperty();
+
+
     }
 
     /**
@@ -107,6 +109,29 @@ class CollectionSearch extends Component
         unset($this->selected[$index]);
     }
 
+
+
+
+
+
+
+
+//    public function getResultsProperty()
+//    {
+//        if (! $this->searchTerm) {
+//            return null;
+//        }
+//
+//        return ModelsCollection::search($this->searchTerm)
+//            ->query(function (Builder $query) {
+//                $query->with([
+//                    'group',
+//                ]);
+//            })->paginate($this->maxResults);
+//    }
+//
+
+
     /**
      * Returns the computed search results.
      *
@@ -114,20 +139,10 @@ class CollectionSearch extends Component
      */
     public function getResultsProperty()
     {
-        $this->searchTerm='s';
-        if (! $this->searchTerm) {
-          // return null;
-            //  return ModelsCollection::where('parent_id','>',0)->get();
-        }
-       // return ModelsCollection::where('parent_id','>',0)->get();
-//        return app(Builder::class, [
-//            'model' => new static,
-//            'query' => $query,
-//            'callback' => $callback,
-//            'softDelete'=> static::usesSoftDelete() && config('scout.soft_delete', false),
-//        ]);
 
-                        return ModelsCollection::search($this->searchTerm)
+        //$this->maxResults=1000;
+
+         $p= ModelsCollection::search($this->searchTerm)
             ->query(function (Builder $query) {
                 $query->with([
                     'group',
@@ -136,12 +151,10 @@ class CollectionSearch extends Component
                     'parent_id','>',0
                 );
             })->paginate($this->maxResults);
-//                return ModelsCollection::search($this->searchTerm)
-//            ->query(function (Builder $query) {
-//                $query->with([
-//                    'group',
-//                ]);
-//            })->paginate($this->maxResults);
+
+         ray($p);
+         return $p;
+
 //        return ModelsCollection::search($this->searchTerm)
 //            ->query(function (Builder $query) {
 //                $query->with([

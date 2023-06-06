@@ -27,9 +27,9 @@ class OrdersTableBuilder extends TableBuilder
             })->url(function ($record) {
                 return route('hub.orders.show', $record->id);
             }),
-            TextColumn::make('customer_reference')->heading('Customer Reference')->value(function ($record) {
-                return $record->customer_reference;
-            }),
+//            TextColumn::make('customer_reference')->heading('Customer Reference')->value(function ($record) {
+//                return $record->customer_reference;
+//            }),
             TextColumn::make('customer')->value(function ($record) {
                 return $record->billingAddress?->fullName;
             }),
@@ -80,7 +80,10 @@ class OrdersTableBuilder extends TableBuilder
 
         if ($this->searchTerm) {
             $query->whereIn('id', Order::search($this->searchTerm)->keys());
+            ray($query)->label('query');
+            ray($this->searchTerm)->label('$this->searchTerm');
         }
+        ray(Order::search($this->searchTerm))->label('Order::search($this->searchTerm');
 
         $filters = collect($this->queryStringFilters)->filter(function ($value) {
             return (bool) $value;

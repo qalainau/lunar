@@ -235,7 +235,7 @@ class OrdersTable extends Table
             return Order::whereCustomerId($this->customerId)
                 ->paginate($this->perPage);
         }
-
+ray($query);
         return $this->tableBuilder
             ->searchTerm($query)
             ->queryStringFilters($filters)

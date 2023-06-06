@@ -114,12 +114,37 @@ class DatabaseEngine extends Engine
             ->get();
     }
 
+
     protected function getSearchQuery(Builder $builder)
     {
         $index = $this->getIndexFromBuilder($builder);
 
+//        return SearchIndex::where('index', '=', $index)
+//            ->whereFullText('content', $builder->query.'*', ['mode' => 'boolean']);
+
+
+        if($index === 'p_collections'){
+            ray('p_collections')->green();
+            return SearchIndex::where('index', '=', $index);
+        }
+
+//        if($index === 'p_collections'){
+//            ray('p_collections')->green();
+//            return SearchIndex::where('index', '=', $index)
+//            ->whereFullText('content', $builder->query.'*', ['mode' => 'boolean']);
+//        }
+
+
         return SearchIndex::where('index', '=', $index)
-            ->whereFullText('content', $builder->query.'*', ['mode' => 'boolean']);
+            ->where('content',  "LIKE",'%'.$builder->query.'%');
+
+//        $search = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $builder->query);
+//        if (empty($search) || $search=== ' ') {
+//            return SearchIndex::where('index', '=', $index);
+//        }
+//        return SearchIndex::where('index', '=', $index)
+//            ->whereFullText('content', $search.'*', ['mode' => 'boolean']);
+
     }
 
     /**

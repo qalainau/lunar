@@ -17,8 +17,6 @@ class ProductShow extends AbstractProduct
                 abort(403);
             }
         }
-
-
         $this->options = collect();
         $this->variantsEnabled = $this->getVariantsCount() > 1;
         $this->variant = $this->product->variants->first();

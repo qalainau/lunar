@@ -15,7 +15,7 @@ trait HasPersonalDetails
             preg_replace(
                 '/\s+/',
                 ' ',
-                "{$this->title} {$this->first_name} {$this->last_name}"
+                "{$this->title} {$this->last_name} {$this->first_name} "
             )
         );
     }

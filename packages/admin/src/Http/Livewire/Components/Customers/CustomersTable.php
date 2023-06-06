@@ -48,15 +48,16 @@ class CustomersTable extends Table
             })->heading(
                 __('adminhub::tables.headings.name')
             ),
-            TextColumn::make('company_name')->heading(
-                __('adminhub::tables.headings.company_name')
+            TextColumn::make('user.email')->heading(
+                'Email'
             ),
-            TextColumn::make('vat_no')->heading(
-                __('adminhub::tables.headings.vat_no')
+            TextColumn::make('address.contact_phone')->heading(
+                '電話番号'
             ),
-            TextColumn::make('account_ref')->heading(
-                __('adminhub::tables.headings.account_ref')
+            TextColumn::make('point')->heading(
+                'ポイント'
             ),
+
         ]);
     }
 
