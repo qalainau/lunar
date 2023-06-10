@@ -47,8 +47,10 @@ class ProductsTable extends Table
         $this->tableBuilder->addFilter(
             SelectFilter::make('status')->options(function () {
                 $statuses = collect([
-                    'published' => 'Published',
-                    'draft' => 'Draft',
+                    'published' => '公開',
+                    'request' => 'リクエスト',
+                    'send_back' => '差し戻し',
+                    'draft' => '下書き',
                 ]);
 
                 return collect([
@@ -83,7 +85,8 @@ class ProductsTable extends Table
                     'success' => $record->status == 'published' && ! $record->deleted_at,
                     'warning' => $record->status == 'request' && ! $record->deleted_at,
                     'info' => $record->status == 'draft' && ! $record->deleted_at,
-                    'danger' => (bool) $record->deleted_at,
+                    'danger' => $record->status == 'send_back' && ! $record->deleted_at,
+                    'default' => (bool) $record->deleted_at,
                 ];
             }),
             ImageColumn::make('thumbnail', function ($record) {

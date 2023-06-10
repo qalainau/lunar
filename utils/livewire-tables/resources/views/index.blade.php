@@ -57,7 +57,7 @@
 
     <div class="lt-overflow-hidden lt-border lt-border-gray-200 lt-rounded-lg">
         <div x-data="{
-            showFilters: false,
+            showFilters: true,
         }" class="lt-w-full lt-divide-y lt-divide-gray-200">
             @if ($this->searchable || $this->filterable)
                 <div class="lt-p-4 lt-bg-gray-100">
