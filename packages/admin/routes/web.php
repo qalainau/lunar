@@ -70,6 +70,10 @@ Route::group([
         Route::group([
             'prefix' => 'reports',
         ], __DIR__.'/includes/reports.php');
+
+        Route::group([
+            'prefix' => 'points',
+        ], __DIR__.'/includes/points.php');
         Route::group([
             'prefix' => 'assets',
         ], __DIR__.'/includes/assets.php');

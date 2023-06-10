@@ -117,6 +117,13 @@ class Manifest
                 'reports:reports',
                 __('レポート')
             ),
+
+            //ポイント
+            new Permission(
+                __('ポイント管理'),
+                'points:points',
+                __('ポイント管理')
+            ),
             new Permission(
                 __('adminhub::auth.permissions.settings.attributes.name'),
                 'settings:manage-attributes',

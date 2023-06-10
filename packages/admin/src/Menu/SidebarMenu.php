@@ -94,6 +94,16 @@ final class SidebarMenu
                 ->route('hub.reports.index');
         });
 
+        $reportGroup = $slot
+            ->group('hub.points')
+            ->name('ポイント管理');
+        $reportGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name('ポイント交換依頼')
+                ->handle('hub.points')
+                ->icon('arrows-right-left')
+                ->route('hub.points.index');
+        });
 
         $productGroup->addItem(function ($menuItem) {
             $menuItem

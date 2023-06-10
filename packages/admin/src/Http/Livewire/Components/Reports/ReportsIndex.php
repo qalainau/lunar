@@ -73,8 +73,6 @@ class ReportsIndex extends Component  implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
 
-
-
         return [
 
             //Tables\Columns\TextColumn::make('id')->label('id')->alignCenter(),
