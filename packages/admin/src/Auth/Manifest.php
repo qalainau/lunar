@@ -106,9 +106,16 @@ class Manifest
             ),
 
             new Permission(
-                __('adminhub::auth.permissions.settings.staff.name'),
+                __('ベンダー'),
                 'vendors:vendors',
-                __('adminhub::auth.permissions.settings.staff.description')
+                __('ベンダー')
+            ),
+
+            //レポート
+            new Permission(
+                __('レポート'),
+                'reports:reports',
+                __('レポート')
             ),
             new Permission(
                 __('adminhub::auth.permissions.settings.attributes.name'),

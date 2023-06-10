@@ -83,6 +83,17 @@ final class SidebarMenu
                 ->route('hub.vendors.index');
         });
 
+        $reportGroup = $slot
+            ->group('hub.reports')
+            ->name('レポート');
+        $reportGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name('レポート')
+                ->handle('hub.reports')
+                ->icon('chart-bar')
+                ->route('hub.reports.index');
+        });
+
 
         $productGroup->addItem(function ($menuItem) {
             $menuItem
@@ -114,6 +125,14 @@ final class SidebarMenu
                     ->route('hub.customers.index')
                     ->icon('users');
             });
+
+//        $salesGroup->addItem(function ($menuItem) {
+//            $menuItem
+//                ->name('レポート')
+//                ->handle('hub.reports')
+//                ->route('hub.reports.index')
+//                ->icon('chart-bar');
+//        });
 
             $salesGroup->addItem(function ($menuItem) {
                 $menuItem

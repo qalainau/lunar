@@ -102,6 +102,8 @@ use Lunar\Hub\Http\Livewire\Components\Vendors\VendorShow;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsIndex;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorCreate;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsTable;
+use Lunar\Hub\Http\Livewire\Components\Reports\ReportsOrderLine;
+use Lunar\Hub\Http\Livewire\Components\Reports\ReportsIndex;
 
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\ActivityLogTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\AddonsTable;
@@ -272,7 +274,9 @@ class AdminHubServiceProvider extends ServiceProvider
         $this->registerFieldtypeComponents();
         $this->registerDiscountComponents();
         $this->registerDashboardComponents();
+        //追加する
         $this->registerVendorComponents();
+        $this->registerReportComponents();
 
         // Blade Components
         Blade::componentNamespace('Lunar\\Hub\\Views\\Components', 'hub');
@@ -392,6 +396,21 @@ class AdminHubServiceProvider extends ServiceProvider
 
     }
 
+
+    /**
+     * Register the components used in the reports area.
+     *
+     * @return void
+     */
+    protected function registerReportComponents()
+    {
+        Livewire::component('hub.components.reports.index', ReportsIndex::class);
+
+        Livewire::component('hub.components.reports.order_line', ReportsOrderLine::class);
+       // Livewire::component('hub.components.reports.show', ReportShow::class);
+
+
+    }
     /**
      * Register the components used in the collections area.
      *

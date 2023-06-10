@@ -58,7 +58,7 @@ class VendorCreate extends AbstractStaff
         $this->staff->brand_id=$brand->id;
 
         $this->staff->save();
-        $this->staffPermissions=collect(['catalogue:manage-products']);
+        $this->staffPermissions=collect(['catalogue:manage-products','reports:reports']);
 
        // $this->staff->staffPermissions=['catalogue:manage-products'=>true,];
         $this->syncPermissions();

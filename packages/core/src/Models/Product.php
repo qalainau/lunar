@@ -294,4 +294,7 @@ class Product extends BaseModel implements SpatieHasMedia
             'priceable_id'
         )->wherePriceableType(ProductVariant::class);
     }
+
+
+
 }
