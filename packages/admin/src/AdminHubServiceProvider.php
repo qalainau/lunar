@@ -105,7 +105,6 @@ use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsTable;
 use Lunar\Hub\Http\Livewire\Components\Reports\ReportsOrderLine;
 use Lunar\Hub\Http\Livewire\Components\Reports\ReportsIndex;
 
-use Lunar\Hub\Http\Livewire\Components\Points\PointsOrderLine;
 use Lunar\Hub\Http\Livewire\Components\Points\PointsIndex;
 
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\ActivityLogTable;
@@ -420,7 +419,6 @@ class AdminHubServiceProvider extends ServiceProvider
     protected function registerPointComponents()
     {
         Livewire::component('hub.components.points.index', PointsIndex::class);
-        Livewire::component('hub.components.points.order_line', PointsOrderLine::class);
     }
     /**
      * Register the components used in the collections area.
