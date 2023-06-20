@@ -39,15 +39,13 @@ class CollectionSearch extends Component
     public array $selected = [];
 
 
-
-
     /**
      * {@inheritDoc}
      */
     public function rules()
     {
         return [
-           // 'searchTerm' => 'required|string|max:255',
+            // 'searchTerm' => 'required|string|max:255',
         ];
     }
 
@@ -89,7 +87,7 @@ class CollectionSearch extends Component
     /**
      * Add the collection to the selected array.
      *
-     * @param  string|int  $id
+     * @param string|int $id
      * @return void
      */
     public function selectCollection($id)
@@ -100,7 +98,7 @@ class CollectionSearch extends Component
     /**
      * Remove a collection from the selected collections.
      *
-     * @param  string|int  $id
+     * @param string|int $id
      * @return void
      */
     public function removeCollection($id)
@@ -141,19 +139,25 @@ class CollectionSearch extends Component
     {
 
         //$this->maxResults=1000;
+//$this->searchTerm
+//        $p = ModelsCollection::search('肉')
+//            ->query(function (Builder $query) {
+//
+//                $query->with([
+//                    'group',
+//                ]);
+//                $query->where(
+//                    'parent_id', '>', 0
+//                );
+//                ray($query->toSql());
+//            })->paginate($this->maxResults);
 
-         $p= ModelsCollection::search($this->searchTerm)
-            ->query(function (Builder $query) {
-                $query->with([
-                    'group',
-                ]);
-                $query->where(
-                    'parent_id','>',0
-                );
-            })->paginate($this->maxResults);
+//        ray($p);
 
-         ray($p);
-         return $p;
+        $p = \Lunar\Models\Collection::where('parent_id', '>', 0)->with('group')->paginate($this->maxResults);
+
+        ray($p);
+        return $p;
 
 //        return ModelsCollection::search($this->searchTerm)
 //            ->query(function (Builder $query) {
