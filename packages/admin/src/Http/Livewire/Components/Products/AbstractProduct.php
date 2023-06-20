@@ -233,7 +233,7 @@ abstract class AbstractProduct extends Component
 
         if (config('lunar-hub.products.require_brand', true)) {
             $baseRules['product.brand_id'] = 'required_without:brand';
-            $baseRules['brand'] = 'required_without:product.brand_id|unique:'.Brand::class.',name';
+            $baseRules['brand'] = 'required_without:product.brand_id|unique:' . Brand::class . ',name';
         }
 
         if ($this->getVariantsCount() <= 1) {
@@ -265,7 +265,7 @@ abstract class AbstractProduct extends Component
         return array_merge(
             $baseRules,
             $this->hasImagesValidationRules(),
-            $this->hasUrlsValidationRules(! $this->product->id),
+            $this->hasUrlsValidationRules(!$this->product->id),
             $this->withAttributesValidationRules(),
             $this->getExtendedValidationRules([
                 'product' => $this->product,
@@ -293,7 +293,7 @@ abstract class AbstractProduct extends Component
     /**
      * Set the options to be whatever we pass through.
      *
-     * @param  array  $optionIds
+     * @param array $optionIds
      * @return void
      */
     public function setOptions($optionIds)
@@ -306,7 +306,7 @@ abstract class AbstractProduct extends Component
     /**
      * Set whether variants should be enabled.
      *
-     * @param  bool  $val
+     * @param bool $val
      * @return void
      */
     public function setVariantsEnabled($val)
@@ -317,7 +317,7 @@ abstract class AbstractProduct extends Component
     /**
      * Set option values.
      *
-     * @param  array  $values
+     * @param array $values
      * @return void
      */
     public function setOptionValues($values)
@@ -328,7 +328,7 @@ abstract class AbstractProduct extends Component
     /**
      * Remove an option by it's given position in the collection.
      *
-     * @param  int  $key
+     * @param int $key
      * @return void
      */
     public function removeOption($key)
@@ -361,9 +361,7 @@ abstract class AbstractProduct extends Component
         })->validate(null, $this->getValidationMessages());
 
         $this->validateUrls();
-        $isNew = ! $this->product->id;
-
-
+        $isNew = !$this->product->id;
 
 
         DB::transaction(function () use ($isNew) {
@@ -383,11 +381,11 @@ abstract class AbstractProduct extends Component
             $this->product->save();
 
             if (($this->getVariantsCount() <= 1) || $isNew) {
-                if (! $this->variant->product_id) {
+                if (!$this->variant->product_id) {
                     $this->variant->product_id = $this->product->id;
                 }
 
-                if (! $this->manualVolume) {
+                if (!$this->manualVolume) {
                     $this->variant->volume_unit = null;
                     $this->variant->volume_value = null;
                 }
@@ -402,9 +400,9 @@ abstract class AbstractProduct extends Component
             }
 
             // We generating variants?
-            $generateVariants = (bool) count($this->optionValues) && ! $this->variantsDisabled;
+            $generateVariants = (bool)count($this->optionValues) && !$this->variantsDisabled;
 
-            if (! $this->variantsEnabled && $this->getVariantsCount()) {
+            if (!$this->variantsEnabled && $this->getVariantsCount()) {
                 $variantToKeep = $this->product->variants()->first();
 
                 $variantsToRemove = $this->product->variants->filter(function ($variant) use ($variantToKeep) {
@@ -423,7 +421,7 @@ abstract class AbstractProduct extends Component
                 GenerateVariants::dispatch($this->product, $this->optionValues);
             }
 
-            if (! $generateVariants && $this->product->variants->count() <= 1 && ! $isNew) {
+            if (!$generateVariants && $this->product->variants->count() <= 1 && !$isNew) {
                 // Only save pricing if we're not generating new variants.
                 $this->savePricing();
             }
@@ -439,8 +437,8 @@ abstract class AbstractProduct extends Component
             $channels = collect($this->availability['channels'])->mapWithKeys(function ($channel) {
                 return [
                     $channel['channel_id'] => [
-                        'starts_at' => ! $channel['enabled'] ? null : $channel['starts_at'],
-                        'ends_at' => ! $channel['enabled'] ? null : $channel['ends_at'],
+                        'starts_at' => !$channel['enabled'] ? null : $channel['starts_at'],
+                        'ends_at' => !$channel['enabled'] ? null : $channel['ends_at'],
                         'enabled' => $channel['enabled'],
                     ],
                 ];
@@ -467,7 +465,7 @@ abstract class AbstractProduct extends Component
             }
 
             $this->associations->each(function ($assoc) {
-                if (! empty($assoc['id'])) {
+                if (!empty($assoc['id'])) {
                     ProductAssociation::find($assoc['id'])->update([
                         'type' => $assoc['type'],
                     ]);
@@ -529,7 +527,7 @@ abstract class AbstractProduct extends Component
     /**
      * Remove a variant.
      *
-     * @param  int  $variantId
+     * @param int $variantId
      * @return void
      */
     public function deleteVariant($variantId)
@@ -572,7 +570,7 @@ abstract class AbstractProduct extends Component
     {
         $this->availability = [
             'channels' => $this->channels->mapWithKeys(function ($channel) {
-                $productChannel = $this->product->channels->first(fn ($assoc) => $assoc->id == $channel->id);
+                $productChannel = $this->product->channels->first(fn($assoc) => $assoc->id == $channel->id);
 
                 return [
                     $channel->id => [
@@ -594,7 +592,7 @@ abstract class AbstractProduct extends Component
                 if ($pivot) {
                     if ($pivot->purchasable) {
                         $status = 'purchasable';
-                    } elseif (! $pivot->visible && ! $pivot->enabled) {
+                    } elseif (!$pivot->visible && !$pivot->enabled) {
                         $status = 'hidden';
                     } elseif ($pivot->visible) {
                         $status = 'visible';
@@ -637,7 +635,7 @@ abstract class AbstractProduct extends Component
     /**
      * Remove the collection by it's index.
      *
-     * @param  int|string  $index
+     * @param int|string $index
      * @return void
      */
     public function removeCollection($index)
@@ -651,7 +649,7 @@ abstract class AbstractProduct extends Component
     /**
      * Map and add the selected collections.
      *
-     * @param  array  $collectionIds
+     * @param array $collectionIds
      * @return void
      */
     public function selectCollections($collectionIds)
@@ -683,7 +681,7 @@ abstract class AbstractProduct extends Component
         $this->associations = $this->product->associations
             ->merge($this->product->inverseAssociations)
             ->map(function ($assoc) {
-                if (! $assoc->target) {
+                if (!$assoc->target) {
                     return;
                 }
 
@@ -706,7 +704,7 @@ abstract class AbstractProduct extends Component
     /**
      * Update the associations.
      *
-     * @param  array  $selectedIds
+     * @param array $selectedIds
      * @return void
      */
     public function updateAssociations($selectedIds)
@@ -714,7 +712,7 @@ abstract class AbstractProduct extends Component
         $selectedProducts = Product::findMany($selectedIds)->map(function ($product) {
             return [
                 'is_temp' => true,
-                'inverse' => (bool) $this->showInverseAssociations,
+                'inverse' => (bool)$this->showInverseAssociations,
                 'target_id' => $product->id,
                 'thumbnail' => optional($product->thumbnail)->getUrl('small'),
                 'name' => $product->translateAttribute('name'),
@@ -732,7 +730,7 @@ abstract class AbstractProduct extends Component
     /**
      * Open the association browser with a given type.
      *
-     * @param  string  $type
+     * @param string $type
      * @return void
      */
     public function openAssociationBrowser($type)
@@ -744,7 +742,7 @@ abstract class AbstractProduct extends Component
     /**
      * Remove an association.
      *
-     * @param  int  $index
+     * @param int $index
      * @return void
      */
     public function removeAssociation($index)
@@ -769,7 +767,7 @@ abstract class AbstractProduct extends Component
     public function getAssociatedProductIdsProperty()
     {
         return collect(
-            $this->associations->map(fn ($assoc) => ['id' => $assoc['target_id']])
+            $this->associations->map(fn($assoc) => ['id' => $assoc['target_id']])
         );
     }
 
@@ -831,7 +829,7 @@ abstract class AbstractProduct extends Component
             ->get()->map(function ($group) {
                 return [
                     'model' => $group,
-                    'fields' => $this->variantAttributes->filter(fn ($att) => $att['group_id'] == $group->id),
+                    'fields' => $this->variantAttributes->filter(fn($att) => $att['group_id'] == $group->id),
                 ];
             });
     }
@@ -954,7 +952,7 @@ abstract class AbstractProduct extends Component
                     'collections',
                 ]),
             ],
-        ])->reject(fn ($item) => ($item['hidden'] ?? false));
+        ])->reject(fn($item) => ($item['hidden'] ?? false));
     }
 
     /**
