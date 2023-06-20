@@ -265,7 +265,7 @@ abstract class AbstractProduct extends Component
         return array_merge(
             $baseRules,
             $this->hasImagesValidationRules(),
-            $this->hasUrlsValidationRules(!$this->product->id),
+            //$this->hasUrlsValidationRules(!$this->product->id),
             $this->withAttributesValidationRules(),
             $this->getExtendedValidationRules([
                 'product' => $this->product,
@@ -360,7 +360,7 @@ abstract class AbstractProduct extends Component
             });
         })->validate(null, $this->getValidationMessages());
 
-        $this->validateUrls();
+        //    $this->validateUrls();
         $isNew = !$this->product->id;
 
 
@@ -864,13 +864,13 @@ abstract class AbstractProduct extends Component
                     'newImages.*',
                 ]),
             ],
-            [
-                'title' => __('adminhub::menu.product.availability'),
-                'id' => 'availability',
-                'has_errors' => $this->errorBag->hasAny([
-                    'availability',
-                ]),
-            ],
+//            [
+//                'title' => __('adminhub::menu.product.availability'),
+//                'id' => 'availability',
+//                'has_errors' => $this->errorBag->hasAny([
+//                    'availability',
+//                ]),
+//            ],
             [
                 'title' => __('adminhub::menu.product.variants'),
                 'id' => 'variants',
@@ -936,14 +936,14 @@ abstract class AbstractProduct extends Component
                     'urls.*',
                 ]),
             ],
-            [
-                'title' => __('adminhub::menu.product.associations'),
-                'id' => 'associations',
-                'hidden' => false,
-                'has_errors' => $this->errorBag->hasAny([
-                    'associations',
-                ]),
-            ],
+//            [
+//                'title' => __('adminhub::menu.product.associations'),
+//                'id' => 'associations',
+//                'hidden' => false,
+//                'has_errors' => $this->errorBag->hasAny([
+//                    'associations',
+//                ]),
+//            ],
             [
                 'title' => __('adminhub::menu.product.collections'),
                 'id' => 'collections',
