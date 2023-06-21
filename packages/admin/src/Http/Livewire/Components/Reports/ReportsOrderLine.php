@@ -14,22 +14,21 @@ use Carbon\Carbon;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Layout;
 
-class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
+class ReportsOrderLine extends Component implements Tables\Contracts\HasTable
 {
 
     use Tables\Concerns\InteractsWithTable;
 
 
-    public function mount($filter,$brand_id)
+    public function mount($filter, $brand_id)
     {
 
-        if(\Auth::user()->brand_id){
-            $this->tableFilters['brand_id']['value']=\Auth::user()->brand_id;
+        if (\Auth::user()->brand_id) {
+            $this->tableFilters['brand_id']['value'] = \Auth::user()->brand_id;
+        } else {
+            $this->tableFilters['brand_id']['value'] = $brand_id;
         }
-        else{
-            $this->tableFilters['brand_id']['value']=$brand_id;
-        }
-        $this->tableFilters['lunar_orders']['placed_at']['value']=$filter;
+        $this->tableFilters['order']['placed_at']['value'] = $filter;
 
 
         ray($this->tableFilters)->green();
@@ -45,19 +44,19 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
     protected function getTableQuery(): Builder
     {
 
-        if(\Auth::user()->brand_id){
-            return \App\Models\OrderLine::query()->with(['purchasable'])
-                ->join('lunar_orders', 'lunar_orders.id', '=', 'lunar_order_lines.order_id')
-                ->where('type', '=','physical')
-                ->where('brand_id', '=',\Auth::user()->brand_id);
+        if (\Auth::user()->brand_id) {
+            return \App\Models\OrderLine::query()->with(['purchasable', 'order'])
+                //->join('lunar_orders', 'lunar_orders.id', '=', 'lunar_order_lines.order_id')
+                ->where('type', '=', 'physical')
+                ->where('brand_id', '=', \Auth::user()->brand_id);
         }
-         return \App\Models\OrderLine::query()->with(['purchasable'])
-             ->join('lunar_orders', 'lunar_orders.id', '=', 'lunar_order_lines.order_id')
-             ->where('type', '=','physical');
+        return \App\Models\OrderLine::query()->with(['purchasable', 'order'])
+            //->join('lunar_orders', 'lunar_orders.id', '=', 'lunar_order_lines.order_id')
+            ->where('type', '=', 'physical');
     }
+
     protected function getTableColumns(): array
     {
-
 
 
         return [
@@ -66,19 +65,19 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
 //                ->options([
 //            'heroicon-o-link',
 //                ]),
-            Tables\Columns\TextColumn::make('id')->label('販売元')->alignCenter(),
+            //      Tables\Columns\TextColumn::make('id')->label('注文行ID')->alignCenter(),
+            Tables\Columns\TextColumn::make('order.reference')->label('注文コード')->alignCenter(),
             Tables\Columns\TextColumn::make('purchasable.product.brand.name')->label('販売元')->alignCenter(),
-            Tables\Columns\TextColumn::make('purchasable.product.brand.id')->label('販売dd元')->alignCenter(),
+            //   Tables\Columns\TextColumn::make('purchasable.product.brand.id')->label('販売元ID')->alignCenter(),
 
-          //  Tables\Columns\TextColumn::make('purchasable.product.brand.id')->label('販売dd元')->alignCenter(),
             Tables\Columns\ImageColumn::make('sfafa')->label('画像')->getStateUsing(
-                function ( $record) {
-                 //  ray($record->product2)->red();
+                function ($record) {
+                    //  ray($record->product2)->red();
                     //ray($record->purchasable)->red();
-                    if($record->type === 'physical') {
+                    if ($record->type === 'physical') {
                         $product_variant = \Lunar\Models\ProductVariant::find($record->purchasable_id);
                         //$unit_price = $product_variant->getThumbnail();
-                        return  $product_variant->getThumbnail()->original_url;
+                        return $product_variant->getThumbnail()->original_url;
                     }
                     return '';
                 }
@@ -96,28 +95,28 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
 //                    return '';
 //                //return $record->purchasable->thumbnail;
 //            })->label('画像')->alignRight(),
-            Tables\Columns\TextColumn::make('description')->label('商品名')->description(function ($record){
+            Tables\Columns\TextColumn::make('description')->label('商品名')->description(function ($record) {
                 return $record->option;
             }),
             Tables\Columns\TextColumn::make('unit_price')->formatStateUsing(function ($state, $record) {
-                $unit_price=0;
-                if(isset($record->unit_price->value)){
+                $unit_price = 0;
+                if (isset($record->unit_price->value)) {
                     $unit_price = $record->unit_price->value;
                 }
-              //  $unit_price = $record->unit_price->value;
-                return number_format($unit_price*1.1).'円';
+                //  $unit_price = $record->unit_price->value;
+                return number_format($unit_price * 1.1) . '円';
                 //return $original_total;
             })->label('税込単価')->alignRight(),
             Tables\Columns\TextColumn::make('quantity')->label('個数')->alignRight(),
 
 
             Tables\Columns\TextColumn::make('total')->formatStateUsing(function ($state, $record) {
-                $original_total=0;
-                if(isset($record->total->value)){
+                $original_total = 0;
+                if (isset($record->total->value)) {
                     $original_total = $record->total->value;
                 }
-               // $original_total = $record->total->value;
-                return number_format($original_total).'円';
+                // $original_total = $record->total->value;
+                return number_format($original_total) . '円';
                 //return $original_total;
             })->label('税込合計')->alignRight(),
 
@@ -135,6 +134,7 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
             //    Tables\Columns\IconColumn::make('is_featured')->boolean(),
         ];
     }
+
     protected function getTableActions(): array
     {
         return [
@@ -144,8 +144,8 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
             Tables\Actions\Action::make('product_page')
                 ->label('商品ページ')
                 ->url(
-                    function ($record){
-                        if($record->type === 'physical') {
+                    function ($record) {
+                        if ($record->type === 'physical') {
                             return '/products/' . $record->purchasable->product->id;
                         }
                         return '';
@@ -158,7 +158,6 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
             //   ]),
         ];
     }
-
 
 
     protected function isTablePaginationEnabled(): bool
@@ -197,32 +196,31 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
                 ->label('販売元')
                 ->relationship('brand',
                     'name', function (Builder $query) {
-                    if(\Auth::user()->brand_id){
-                        return $query->where('id',\Auth::user()->brand_id);
-                    }
+                        if (\Auth::user()->brand_id) {
+                            return $query->where('id', \Auth::user()->brand_id);
+                        }
                         return $query;
                     }
                 )
-                ->default(function() {
-                    if(isset($this->tableFilters['brand_id'])){
+                ->default(function () {
+                    if (isset($this->tableFilters['brand_id'])) {
                         ray($this->tableFilters['brand_id'])->red()->label('brand_id');
                         return $this->tableFilters['brand_id']['value'];
                     }
-                    return  null;
+                    return null;
                 }),
-
-            SelectFilter::make('lunar_orders.placed_at')
+            SelectFilter::make('order.placed_at')
                 ->options($dates)
-                ->query(function (Builder $query, array $data) use($dates): Builder {
+                ->query(function (Builder $query, array $data) use ($dates): Builder {
 
-                    if(isset( $this->tableFilters['lunar_orders'])){
-                        $data= $this->tableFilters['lunar_orders']['placed_at']['value'];
-                        ray( $this->tableFilters['lunar_orders'])->red()->label('data');
+                    if (isset($this->tableFilters['order'])) {
+                        $data = $this->tableFilters['order']['placed_at']['value'];
+                        ray($this->tableFilters['order'])->red()->label('data');
                     }
 
                     ray($dates)->red()->label('$dates');
                     // ray($dates)->red()->label('$dates');
-                    if(empty($data)){
+                    if (empty($data)) {
                         $data = Carbon::now();
                         //    $data=end($dates) ;
                         //  $data=$dates['2023-04'];
@@ -235,18 +233,25 @@ class ReportsOrderLine extends Component  implements Tables\Contracts\HasTable
                     ray($monthStart)->red()->label('$monthStart');
                     ray($monthEnd)->red()->label('$monthEnd');
 
-                    return $query
-                        ->when(
-                            $monthStart,
-                            fn (Builder $query, $date): Builder => $query->whereDate('lunar_orders.placed_at', '>=', $date),
-                        )
-                        ->when(
-                            $monthEnd,
-                            fn (Builder $query, $date): Builder => $query->whereDate('lunar_orders.placed_at', '<=', $date),
-                        );
-                })->default(function() use($dates){
+
+                    return $query->whereHas(
+                        'order',
+                        fn(Builder $query) => $query
+                            ->when(
+                                $monthStart,
+                                fn(Builder $query, $date): Builder => $query->whereDate('lunar_orders.placed_at', '>=', $date),
+                            )
+                            ->when(
+                                $monthEnd,
+                                fn(Builder $query, $date): Builder => $query->whereDate('lunar_orders.placed_at', '<=', $date),
+                            )
+
+                    );
+
+                })->default(function () use ($dates) {
                     return array_key_last($dates);
                 })->label('年月'),
+
 
         ];
     }
