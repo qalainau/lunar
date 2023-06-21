@@ -104,6 +104,8 @@ use Lunar\Hub\Http\Livewire\Components\Vendors\VendorCreate;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsTable;
 use Lunar\Hub\Http\Livewire\Components\Reports\ReportsOrderLine;
 use Lunar\Hub\Http\Livewire\Components\Reports\ReportsIndex;
+use Lunar\Hub\Http\Livewire\Components\Deliveries\DeliveriesOrderLine;
+use Lunar\Hub\Http\Livewire\Components\Deliveries\DeliveriesIndex;
 
 use Lunar\Hub\Http\Livewire\Components\Points\PointsIndex;
 
@@ -144,7 +146,7 @@ class AdminHubServiceProvider extends ServiceProvider
 {
     protected $configFiles = ['products', 'customers', 'storefront', 'system'];
 
-    protected $root = __DIR__.'/..';
+    protected $root = __DIR__ . '/..';
 
     /**
      * Register any application services.
@@ -199,10 +201,10 @@ class AdminHubServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'adminhub');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'adminhub');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'adminhub');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'adminhub');
 
         Config::set('livewire-tables.translate_namespace', 'adminhub');
 
@@ -224,12 +226,12 @@ class AdminHubServiceProvider extends ServiceProvider
             });
 
             $this->publishes([
-                __DIR__.'/../database/migrations/' => database_path('migrations'),
+                __DIR__ . '/../database/migrations/' => database_path('migrations'),
             ], 'lunar.migrations');
 
             $this->publishes([
-                __DIR__.'/../resources/views/components/branding' => resource_path('views/vendor/adminhub/components/branding'),
-                __DIR__.'/../resources/views/pdf' => resource_path('views/vendor/adminhub'),
+                __DIR__ . '/../resources/views/components/branding' => resource_path('views/vendor/adminhub/components/branding'),
+                __DIR__ . '/../resources/views/pdf' => resource_path('views/vendor/adminhub'),
             ], 'lunar.hub.views');
 
             $this->publishes([
@@ -278,6 +280,7 @@ class AdminHubServiceProvider extends ServiceProvider
         $this->registerDashboardComponents();
         //追加する
         $this->registerVendorComponents();
+        $this->registerDeliveryComponents();
         $this->registerReportComponents();
         $this->registerPointComponents();
 
@@ -392,13 +395,23 @@ class AdminHubServiceProvider extends ServiceProvider
     protected function registerVendorComponents()
     {
         Livewire::component('hub.components.vendors.index', VendorsIndex::class);
-       Livewire::component('hub.components.vendors.table', VendorsTable::class);
+        Livewire::component('hub.components.vendors.table', VendorsTable::class);
         Livewire::component('hub.components.vendors.show', VendorShow::class);
         Livewire::component('hub.components.vendors.create', VendorCreate::class);
 
 
     }
 
+    /**
+     * Register the components used in the reports area.
+     *
+     * @return void
+     */
+    protected function registerDeliveryComponents()
+    {
+        Livewire::component('hub.components.deliveries.index', DeliveriesIndex::class);
+        Livewire::component('hub.components.deliveries.order_line', DeliveriesOrderLine::class);
+    }
 
     /**
      * Register the components used in the reports area.
@@ -420,6 +433,7 @@ class AdminHubServiceProvider extends ServiceProvider
     {
         Livewire::component('hub.components.points.index', PointsIndex::class);
     }
+
     /**
      * Register the components used in the collections area.
      *
@@ -541,7 +555,7 @@ class AdminHubServiceProvider extends ServiceProvider
     private function registerPublishables()
     {
         $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/lunar/admin-hub/'),
+            __DIR__ . '/../public' => public_path('vendor/lunar/admin-hub/'),
         ], 'lunar.hub.public');
     }
 
@@ -572,7 +586,7 @@ class AdminHubServiceProvider extends ServiceProvider
     {
         Gate::after(function ($user, $ability) {
             // Are we trying to authorize something within the hub?
-            $permission = $this->app->get(Manifest::class)->getPermissions()->first(fn ($permission) => $permission->handle === $ability);
+            $permission = $this->app->get(Manifest::class)->getPermissions()->first(fn($permission) => $permission->handle === $ability);
             if ($permission) {
                 return $user->admin || $user->authorize($ability);
             }

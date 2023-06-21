@@ -47,30 +47,28 @@ final class SidebarMenu
     {
         $slot = Menu::slot('sidebar');
 
-            $catalogueGroup = $slot
-                ->group('hub.catalogue')
-                ->name(__('adminhub::menu.sidebar.catalogue'));
-            $salesGroup = $slot
-                ->group('hub.sales')
-                ->name(__('adminhub::menu.sidebar.sales'));
+        $catalogueGroup = $slot
+            ->group('hub.catalogue')
+            ->name(__('adminhub::menu.sidebar.catalogue'));
+        $salesGroup = $slot
+            ->group('hub.sales')
+            ->name(__('adminhub::menu.sidebar.sales'));
 
-            $productGroup = $catalogueGroup
-                ->section('hub.products')
-                ->name(__('adminhub::menu.sidebar.products'))
-                ->handle('hub.products')
-                ->route('hub.products.index')
-                ->icon('shopping-bag');
-            $catalogueGroup
-                ->section('hub.collections')
-                ->name(__('adminhub::menu.sidebar.collections'))
-                ->handle([
-                    'hub.collection-groups',
-                    'hub.collections',
-                ])
-                ->route('hub.collection-groups.index')
-                ->icon('collection');
-
-
+        $productGroup = $catalogueGroup
+            ->section('hub.products')
+            ->name(__('adminhub::menu.sidebar.products'))
+            ->handle('hub.products')
+            ->route('hub.products.index')
+            ->icon('shopping-bag');
+        $catalogueGroup
+            ->section('hub.collections')
+            ->name(__('adminhub::menu.sidebar.collections'))
+            ->handle([
+                'hub.collection-groups',
+                'hub.collections',
+            ])
+            ->route('hub.collection-groups.index')
+            ->icon('collection');
 
 
         $vendorGroup = $slot
@@ -81,6 +79,18 @@ final class SidebarMenu
                 ->name('ベンダー管理')
                 ->handle('hub.vendors')
                 ->route('hub.vendors.index');
+        });
+
+
+        $deliveryGroup = $slot
+            ->group('hub.deliveries')
+            ->name('配送管理');
+        $deliveryGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name('配送')
+                ->handle('hub.deliveries')
+                ->icon('truck')
+                ->route('hub.deliveries.index');
         });
 
         $reportGroup = $slot
@@ -120,21 +130,21 @@ final class SidebarMenu
 //        });
 
 
-            $salesGroup->addItem(function ($menuItem) {
-                $menuItem
-                    ->name(__('adminhub::menu.sidebar.orders'))
-                    ->handle('hub.orders')
-                    ->route('hub.orders.index')
-                    ->icon('cash');
-            });
+        $salesGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name(__('adminhub::menu.sidebar.orders'))
+                ->handle('hub.orders')
+                ->route('hub.orders.index')
+                ->icon('cash');
+        });
 
-            $salesGroup->addItem(function ($menuItem) {
-                $menuItem
-                    ->name(__('adminhub::menu.sidebar.customers'))
-                    ->handle('hub.customers')
-                    ->route('hub.customers.index')
-                    ->icon('users');
-            });
+        $salesGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name(__('adminhub::menu.sidebar.customers'))
+                ->handle('hub.customers')
+                ->route('hub.customers.index')
+                ->icon('users');
+        });
 
 //        $salesGroup->addItem(function ($menuItem) {
 //            $menuItem
@@ -144,13 +154,13 @@ final class SidebarMenu
 //                ->icon('chart-bar');
 //        });
 
-            $salesGroup->addItem(function ($menuItem) {
-                $menuItem
-                    ->name(__('adminhub::menu.sidebar.discounts'))
-                    ->handle('hub.discounts')
-                    ->route('hub.discounts.index')
-                    ->icon('ticket');
-            });
+        $salesGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name(__('adminhub::menu.sidebar.discounts'))
+                ->handle('hub.discounts')
+                ->route('hub.discounts.index')
+                ->icon('ticket');
+        });
 
         return $this;
     }

@@ -28,7 +28,7 @@ class VendorCreate extends AbstractStaff
     {
         return [
             'staffPermissions' => 'array',
-            'staff.email' => 'required|email|unique:'.get_class($this->staff).',email',
+            'staff.email' => 'required|email|unique:' . get_class($this->staff) . ',email',
             'staff.firstname' => 'string|max:255',
             'staff.lastname' => 'required|string|max:255',
             'staff.phone_number' => 'string|max:255',
@@ -47,23 +47,23 @@ class VendorCreate extends AbstractStaff
      */
     public function create()
     {
-        $this->staff->admin=0;
-        $this->staff->firstname='';
+        $this->staff->admin = 0;
+        $this->staff->firstname = '';
 
         ray('hit create');
         $this->validate();
 
         $this->staff->password = Hash::make($this->password);
-        $this->staff->admin = (bool) $this->staff->admin;
+        $this->staff->admin = (bool)$this->staff->admin;
 
         $brand = new \Lunar\Models\Brand(['name' => $this->staff->lastname]);
         $brand->save();
-        $this->staff->brand_id=$brand->id;
+        $this->staff->brand_id = $brand->id;
 
         $this->staff->save();
-        $this->staffPermissions=collect(['catalogue:manage-products','reports:reports']);
+        $this->staffPermissions = collect(['catalogue:manage-products', 'reports:reports', 'deliveries:deliveries']);
 
-       // $this->staff->staffPermissions=['catalogue:manage-products'=>true,];
+        // $this->staff->staffPermissions=['catalogue:manage-products'=>true,];
         $this->syncPermissions();
 
         $this->notify('ベンダーを追加しました', 'hub.vendors.index');
@@ -80,7 +80,7 @@ class VendorCreate extends AbstractStaff
         $permissions = $manifest->getGroupedPermissions();
 
         return view('adminhub::livewire.components.vendors.create', [
-            'firstPartyPermissions' => $permissions->filter(fn ($permission) => (bool) $permission->firstParty),
+            'firstPartyPermissions' => $permissions->filter(fn($permission) => (bool)$permission->firstParty),
         ])->layout('adminhub::layouts.base');
     }
 }

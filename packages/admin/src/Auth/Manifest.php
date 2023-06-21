@@ -60,7 +60,7 @@ class Manifest
             return null;
         }
 
-        return $this->permissions->first(fn ($parent) => $parent->handle === $crumbs[0]);
+        return $this->permissions->first(fn($parent) => $parent->handle === $crumbs[0]);
     }
 
     /**
@@ -76,9 +76,9 @@ class Manifest
         $permission->firstParty(false);
 
         // Do we already have a permission with this handle?
-        $existing = $this->permissions->first(fn ($p) => $p->handle == $permission->handle);
+        $existing = $this->permissions->first(fn($p) => $p->handle == $permission->handle);
 
-        if (! $existing) {
+        if (!$existing) {
             $this->permissions->push($permission);
         }
     }
@@ -110,7 +110,12 @@ class Manifest
                 'vendors:vendors',
                 __('ベンダー')
             ),
-
+            //配送管理
+            new Permission(
+                __('配送管理'),
+                'deliveries:deliveries',
+                __('配送管理')
+            ),
             //レポート
             new Permission(
                 __('レポート'),
