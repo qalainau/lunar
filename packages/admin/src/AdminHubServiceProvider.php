@@ -104,10 +104,14 @@ use Lunar\Hub\Http\Livewire\Components\Vendors\VendorCreate;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsTable;
 use Lunar\Hub\Http\Livewire\Components\Reports\ReportsOrderLine;
 use Lunar\Hub\Http\Livewire\Components\Reports\ReportsIndex;
-use Lunar\Hub\Http\Livewire\Components\Deliveries\DeliveriesOrderLine;
+
+
 use Lunar\Hub\Http\Livewire\Components\Deliveries\DeliveriesIndex;
 
 use Lunar\Hub\Http\Livewire\Components\Points\PointsIndex;
+
+
+use Lunar\Hub\Http\Livewire\Components\VendorSettings\VendorSettingsIndex;
 
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\ActivityLogTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\AddonsTable;
@@ -283,6 +287,7 @@ class AdminHubServiceProvider extends ServiceProvider
         $this->registerDeliveryComponents();
         $this->registerReportComponents();
         $this->registerPointComponents();
+        $this->registerVendorSettingsComponents();
 
         // Blade Components
         Blade::componentNamespace('Lunar\\Hub\\Views\\Components', 'hub');
@@ -410,7 +415,7 @@ class AdminHubServiceProvider extends ServiceProvider
     protected function registerDeliveryComponents()
     {
         Livewire::component('hub.components.deliveries.index', DeliveriesIndex::class);
-        Livewire::component('hub.components.deliveries.order_line', DeliveriesOrderLine::class);
+        //  Livewire::component('hub.components.deliveries.order_line', DeliveriesOrderLine::class);
     }
 
     /**
@@ -432,6 +437,16 @@ class AdminHubServiceProvider extends ServiceProvider
     protected function registerPointComponents()
     {
         Livewire::component('hub.components.points.index', PointsIndex::class);
+    }
+
+    /**
+     * Register the components used in the reports area.
+     *
+     * @return void
+     */
+    protected function registerVendorSettingsComponents()
+    {
+        Livewire::component('hub.components.vendor-settings.index', VendorSettingsIndex::class);
     }
 
     /**

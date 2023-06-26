@@ -104,6 +104,7 @@ final class SidebarMenu
                 ->route('hub.reports.index');
         });
 
+
         $reportGroup = $slot
             ->group('hub.points')
             ->name('ポイント管理');
@@ -113,6 +114,18 @@ final class SidebarMenu
                 ->handle('hub.points')
                 ->icon('arrows-right-left')
                 ->route('hub.points.index');
+        });
+
+
+        $vendorSettingsGroup = $slot
+            ->group('hub.vendor-settings')
+            ->name('ショップ設定');
+        $vendorSettingsGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name('特商法')
+                ->handle('hub.vendor-settings')
+                ->icon('settings')
+                ->route('hub.vendor-settings.index');
         });
 
         $productGroup->addItem(function ($menuItem) {

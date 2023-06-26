@@ -79,6 +79,11 @@ Route::group([
         Route::group([
             'prefix' => 'points',
         ], __DIR__ . '/includes/points.php');
+
+        Route::group([
+            'prefix' => 'vendor-settings',
+        ], __DIR__ . '/includes/vendor-settings.php');
+
         Route::group([
             'prefix' => 'assets',
         ], __DIR__ . '/includes/assets.php');

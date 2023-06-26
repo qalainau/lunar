@@ -129,6 +129,14 @@ class Manifest
                 'points:points',
                 __('ポイント管理')
             ),
+
+
+            //ポイント
+            new Permission(
+                __('販売者設定'),
+                'vendor-settings:vendor-settings',
+                __('販売者設定')
+            ),
             new Permission(
                 __('adminhub::auth.permissions.settings.attributes.name'),
                 'settings:manage-attributes',
