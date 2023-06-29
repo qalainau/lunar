@@ -38,13 +38,13 @@ final class SettingsMenu
     {
         $storeSection = $this->slot->section('store')->name('Store');
 
-//        $storeSection->addItem(function (MenuLink $item) {
-//            $item->name('Attributes')
-//                 ->handle('hub.attributes')
-//                 ->route('hub.attributes.index')
-//                 ->gate('settings:manage-attributes')
-//                 ->icon('beaker');
-//        });
+        $storeSection->addItem(function (MenuLink $item) {
+            $item->name('アトリビュート')
+                ->handle('hub.attributes')
+                ->route('hub.attributes.index')
+                ->gate('settings:manage-attributes')
+                ->icon('beaker');
+        });
 
 //        $storeSection->addItem(function (MenuLink $item) {
 //            $item->name('Channels')
