@@ -21,6 +21,7 @@ class OrderShow extends Component
      */
     public Order $order;
 
+
     /**
      * The instance of the shipping address.
      *
@@ -55,10 +56,16 @@ class OrderShow extends Component
      */
     public bool $showUpdateStatus = false;
 
+
     /**
      * Whether to show the address edit screen.
      */
     public bool $showShippingAddressEdit = false;
+
+    /**
+     * Whether to show the address edit screen.
+     */
+    public bool $showDeliveryEdit = false;
 
     /**
      * Whether to show the billing address edit.
@@ -103,6 +110,8 @@ class OrderShow extends Component
     {
         return [
             'order.status' => 'string',
+            'order.delivery_company' => 'string',
+            'order.delivery_number' => 'string',
             'comment' => 'required|string',
             'shippingAddress.postcode' => 'required|string|max:255',
             'shippingAddress.title' => 'nullable|string|max:255',
@@ -140,6 +149,8 @@ class OrderShow extends Component
         $this->shippingAddress = $this->order->shippingAddress ?: new OrderAddress();
 
         $this->billingAddress = $this->order->billingAddress ?: new OrderAddress();
+        //$this->
+
     }
 
     /**
@@ -285,11 +296,11 @@ class OrderShow extends Component
             return $transaction->type == 'intent';
         })->count();
 
-        if (! $intents) {
+        if (!$intents) {
             return false;
         }
 
-        return ! $captures;
+        return !$captures;
     }
 
     /**
@@ -347,7 +358,7 @@ class OrderShow extends Component
     {
         $total = $this->intentTotal ?: $this->captureTotal;
 
-        if (! $total) {
+        if (!$total) {
             return 'offline';
         }
 
@@ -402,12 +413,35 @@ class OrderShow extends Component
     /**
      * Handle when selected order lines update.
      *
-     * @param  array  $val
+     * @param array $val
      * @return void
      */
     public function updatedSelectedLines($val)
     {
         $this->emit('updateRefundAmount', $this->refundAmount);
+    }
+
+
+    /**
+     * Save the delivery.
+     *
+     * @return void
+     */
+    public function saveDelivery()
+    {
+
+
+        // $this->validate($addressRules->toArray());
+
+        // $this->order->order_id = $this->order->id;
+        $this->order->save();
+
+
+        $this->notify(
+            __('宅配伝票情報を更新しました')
+        );
+
+        $this->showDeliveryEdit = false;
     }
 
     /**
@@ -467,7 +501,7 @@ class OrderShow extends Component
      */
     public function getShippingEqualsBillingProperty()
     {
-        if (! $this->shippingAddress || ! $this->billingAddress) {
+        if (!$this->shippingAddress || !$this->billingAddress) {
             return false;
         }
 
@@ -495,7 +529,7 @@ class OrderShow extends Component
      */
     public function getShippingStatesProperty()
     {
-        if (! $this->shippingAddress) {
+        if (!$this->shippingAddress) {
             return collect();
         }
 
@@ -509,7 +543,7 @@ class OrderShow extends Component
      */
     public function getBillingStatesProperty()
     {
-        if (! $this->billingAddress) {
+        if (!$this->billingAddress) {
             return collect();
         }
 
@@ -523,7 +557,7 @@ class OrderShow extends Component
      */
     public function getMetaFieldsProperty()
     {
-        return (array) $this->order->meta;
+        return (array)$this->order->meta;
     }
 
     /**
