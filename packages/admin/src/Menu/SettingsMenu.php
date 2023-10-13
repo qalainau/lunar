@@ -141,5 +141,13 @@ final class SettingsMenu
                 ->gate('settings:manage-staff')
                 ->icon('identification');
         });
+
+        $adminSection->addItem(function (MenuLink $item) {
+            $item->name('支店')
+                ->handle('hub.branches')
+                ->route('hub.branches.index')
+                ->gate('settings:manage-branches')
+                ->icon('office-building');
+        });
     }
 }

@@ -23,6 +23,10 @@ use Lunar\Hub\Http\Livewire\Pages\Settings\Product\Options\OptionsIndex;
 use Lunar\Hub\Http\Livewire\Pages\Settings\Staff\StaffCreate;
 use Lunar\Hub\Http\Livewire\Pages\Settings\Staff\StaffIndex;
 use Lunar\Hub\Http\Livewire\Pages\Settings\Staff\StaffShow;
+
+use Lunar\Hub\Http\Livewire\Pages\Settings\Branches\BranchCreate;
+use Lunar\Hub\Http\Livewire\Pages\Settings\Branches\BranchesIndex;
+use Lunar\Hub\Http\Livewire\Pages\Settings\Branches\BranchShow;
 use Lunar\Hub\Http\Livewire\Pages\Settings\Tags\TagShow;
 use Lunar\Hub\Http\Livewire\Pages\Settings\Tags\TagsIndex;
 use Lunar\Hub\Http\Livewire\Pages\Settings\Taxes\TaxClassesIndex;
@@ -71,16 +75,25 @@ Route::group([
     Route::get('staff/{staff}', StaffShow::class)->withTrashed()->name('hub.staff.show');
 });
 
-/**
- * Customer Groups.
- */
 Route::group([
-    'middleware' => 'can:settings:manage-staff',
+    'middleware' => 'can:settings:manage-branches',
 ], function () {
-    Route::get('customer-groups', CustomerGroupsIndex::class)->name('hub.customer-groups.index');
-    Route::get('customer-groups/create', CustomerGroupCreate::class)->name('hub.customer-groups.create');
-    Route::get('customer-groups/{customerGroup}', CustomerGroupShow::class)->withTrashed()->name('hub.customer-groups.show');
+    Route::get('branches', BranchesIndex::class)->name('hub.branches.index');
+    Route::get('branches/create', BranchCreate::class)->name('hub.branches.create');
+    Route::get('branches/{branch}', BranchShow::class)->withTrashed()->name('hub.branches.show');
 });
+
+
+///**
+// * Customer Groups.
+// */
+//Route::group([
+//    'middleware' => 'can:settings:manage-staff',
+//], function () {
+//    Route::get('customer-groups', CustomerGroupsIndex::class)->name('hub.customer-groups.index');
+//    Route::get('customer-groups/create', CustomerGroupCreate::class)->name('hub.customer-groups.create');
+//    Route::get('customer-groups/{customerGroup}', CustomerGroupShow::class)->withTrashed()->name('hub.customer-groups.show');
+//});
 
 /*
 /**

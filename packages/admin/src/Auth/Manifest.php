@@ -104,7 +104,11 @@ class Manifest
                 'settings:manage-staff',
                 __('adminhub::auth.permissions.settings.staff.description')
             ),
-
+            new Permission(
+                __('支店'),
+                'settings:manage-branches',
+                __('支店')
+            ),
             new Permission(
                 __('ベンダー'),
                 'vendors:vendors',

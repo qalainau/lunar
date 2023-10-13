@@ -96,6 +96,9 @@ use Lunar\Hub\Http\Livewire\Components\Settings\Product\Options\OptionValueEdit;
 use Lunar\Hub\Http\Livewire\Components\Settings\Staff\StaffCreate;
 use Lunar\Hub\Http\Livewire\Components\Settings\Staff\StaffIndex;
 use Lunar\Hub\Http\Livewire\Components\Settings\Staff\StaffShow;
+use Lunar\Hub\Http\Livewire\Components\Settings\Branches\BranchCreate;
+use Lunar\Hub\Http\Livewire\Components\Settings\Branches\BranchesIndex;
+use Lunar\Hub\Http\Livewire\Components\Settings\Branches\BranchShow;
 
 
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorShow;
@@ -121,6 +124,7 @@ use Lunar\Hub\Http\Livewire\Components\Settings\Tables\CurrenciesTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\CustomerGroupsTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\LanguagesTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\StaffTable;
+use Lunar\Hub\Http\Livewire\Components\Settings\Tables\BranchesTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\TagsTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tables\TaxZonesTable;
 use Lunar\Hub\Http\Livewire\Components\Settings\Tags\TagShow;
@@ -503,6 +507,12 @@ class AdminHubServiceProvider extends ServiceProvider
         Livewire::component('hub.components.settings.staff.table', StaffTable::class);
         Livewire::component('hub.components.settings.staff.show', StaffShow::class);
         Livewire::component('hub.components.settings.staff.create', StaffCreate::class);
+
+        // Branches
+        Livewire::component('hub.components.settings.branches.index', BranchesIndex::class);
+        Livewire::component('hub.components.settings.branches.table', BranchesTable::class);
+        Livewire::component('hub.components.settings.branches.show', BranchShow::class);
+        Livewire::component('hub.components.settings.branches.create', BranchCreate::class);
 
         // Customer Groups
         Livewire::component('hub.components.settings.customer-groups.index', CustomerGroupsIndex::class);
