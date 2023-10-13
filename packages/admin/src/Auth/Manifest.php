@@ -105,9 +105,9 @@ class Manifest
                 __('adminhub::auth.permissions.settings.staff.description')
             ),
             new Permission(
-                __('支店'),
+                __('支部'),
                 'settings:manage-branches',
-                __('支店')
+                __('支部')
             ),
             new Permission(
                 __('ベンダー'),

@@ -41,7 +41,7 @@ class BranchCreate extends AbstractBranches
     {
         $this->validate();
         $this->branch->save();
-        $this->notify('支店を追加しました.', 'hub.branches.index');
+        $this->notify('支部を追加しました.', 'hub.branches.index');
     }
 
     /**

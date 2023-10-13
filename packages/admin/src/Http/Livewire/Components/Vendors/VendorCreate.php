@@ -37,6 +37,7 @@ class VendorCreate extends AbstractStaff
             'staff.admin' => 'nullable|boolean',
             'password' => 'required|min:8|max:255|confirmed',
             'password_confirmation' => 'string',
+            'branch_id' => 'required|integer',
         ];
     }
 
@@ -56,7 +57,10 @@ class VendorCreate extends AbstractStaff
         $this->staff->password = Hash::make($this->password);
         $this->staff->admin = (bool)$this->staff->admin;
 
-        $brand = new \Lunar\Models\Brand(['name' => $this->staff->lastname]);
+        $brand = new \Lunar\Models\Brand([
+            'name' => $this->staff->lastname,
+            'branch_id' => $this->branch_id,
+        ]);
         $brand->save();
         $this->staff->brand_id = $brand->id;
 

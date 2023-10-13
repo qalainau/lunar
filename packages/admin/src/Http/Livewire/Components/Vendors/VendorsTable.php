@@ -47,7 +47,7 @@ class VendorsTable extends LunarTable
                 return $record->email;
             })->gravatar()->heading(false),
             StatusColumn::make('active', function ($record) {
-                return ! $record->deleted_at;
+                return !$record->deleted_at;
             }),
             TextColumn::make('name', function ($record) {
                 return $record->fullName;
@@ -55,13 +55,14 @@ class VendorsTable extends LunarTable
                 return route('hub.vendors.show', $record->id);
             }),
             TextColumn::make('email'),
+            TextColumn::make('branch_id'),
         ]);
     }
 
     /**
      * Remove a saved search record.
      *
-     * @param  int  $id
+     * @param int $id
      * @return void
      */
     public function deleteSavedSearch($id)
@@ -130,6 +131,6 @@ class VendorsTable extends LunarTable
             $query->search($this->query, true);
         }
 
-        return $query->where('brand_id','>',0)->withTrashed()->paginate($this->perPage);
+        return $query->where('brand_id', '>', 0)->withTrashed()->paginate($this->perPage);
     }
 }

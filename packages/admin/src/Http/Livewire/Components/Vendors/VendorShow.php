@@ -34,6 +34,7 @@ class VendorShow extends AbstractStaff
     public function mount()
     {
         $this->staffPermissions = $this->staff->permissions->pluck('handle');
+        $this->branch_id = $this->staff->brand->branch_id;
     }
 
     /**
@@ -45,14 +46,14 @@ class VendorShow extends AbstractStaff
     {
         return [
             'staffPermissions' => 'array',
-            'staff.email' => 'required|email|unique:'.get_class($this->staff).',email,'.$this->staff->id,
+            'staff.email' => 'required|email|unique:' . get_class($this->staff) . ',email,' . $this->staff->id,
             'staff.firstname' => 'string|max:255',
             'staff.lastname' => 'string|max:255',
             'staff.phone_number' => 'string|max:255',
             'staff.address' => 'string|max:255',
             'staff.post_code' => 'string|max:255',
             'staff.admin' => 'nullable|boolean',
-
+            'branch_id' => 'required|integer',
             'password' => 'nullable|min:8|max:255|confirmed',
         ];
     }
@@ -112,7 +113,7 @@ class VendorShow extends AbstractStaff
         $this->validate();
 
         // If we only have one admin, we can't remove it.
-        if (! $this->staff->admin && ! Staff::where('id', '!=', $this->staff->id)->whereAdmin(true)->exists()) {
+        if (!$this->staff->admin && !Staff::where('id', '!=', $this->staff->id)->whereAdmin(true)->exists()) {
             $this->notify('You must have at least one admin');
 
             return;
@@ -121,13 +122,14 @@ class VendorShow extends AbstractStaff
         if ($this->password) {
             $this->staff->password = Hash::make($this->password);
         }
-ray($this->staff->brand->name);
+        ray($this->staff->brand->name);
 
         $this->staff->save();
-        $this->staff->brand->name=$this->staff->lastname;
+        $this->staff->brand->name = $this->staff->lastname;
+        $this->staff->brand->branch_id = $this->branch_id;
         $this->staff->brand->save();
 
-      //  $this->syncPermissions();
+        //  $this->syncPermissions();
 
         $this->notify('ベンダーを更新しました');
     }
@@ -143,7 +145,7 @@ ray($this->staff->brand->name);
         $permissions = $manifest->getGroupedPermissions();
 
         return view('adminhub::livewire.components.vendors.show', [
-            'firstPartyPermissions' => $permissions->filter(fn ($permission) => (bool) $permission->firstParty),
+            'firstPartyPermissions' => $permissions->filter(fn($permission) => (bool)$permission->firstParty),
         ])->layout('adminhub::layouts.base');
     }
 }
