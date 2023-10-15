@@ -67,7 +67,9 @@ Route::group([
         Route::group([
             'prefix' => 'vendors',
         ], __DIR__ . '/includes/vendors.php');
-
+        Route::group([
+            'prefix' => 'carriers',
+        ], __DIR__ . '/includes/carriers.php');
         Route::group([
             'prefix' => 'deliveries',
         ], __DIR__ . '/includes/deliveries.php');

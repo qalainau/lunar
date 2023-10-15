@@ -109,6 +109,12 @@ use Lunar\Hub\Http\Livewire\Components\Reports\ReportsOrderLine;
 use Lunar\Hub\Http\Livewire\Components\Reports\ReportsIndex;
 
 
+use Lunar\Hub\Http\Livewire\Components\Carriers\CarrierShow;
+use Lunar\Hub\Http\Livewire\Components\Carriers\CarriersIndex;
+use Lunar\Hub\Http\Livewire\Components\Carriers\CarrierCreate;
+use Lunar\Hub\Http\Livewire\Components\Carriers\CarriersTable;
+
+
 use Lunar\Hub\Http\Livewire\Components\Deliveries\DeliveriesIndex;
 
 use Lunar\Hub\Http\Livewire\Components\Points\PointsIndex;
@@ -288,6 +294,7 @@ class AdminHubServiceProvider extends ServiceProvider
         $this->registerDashboardComponents();
         //追加する
         $this->registerVendorComponents();
+        $this->registerCarrierComponents();
         $this->registerDeliveryComponents();
         $this->registerReportComponents();
         $this->registerPointComponents();
@@ -407,8 +414,19 @@ class AdminHubServiceProvider extends ServiceProvider
         Livewire::component('hub.components.vendors.table', VendorsTable::class);
         Livewire::component('hub.components.vendors.show', VendorShow::class);
         Livewire::component('hub.components.vendors.create', VendorCreate::class);
+    }
 
-
+    /**
+     * Register the components used in the vendors area.
+     *
+     * @return void
+     */
+    protected function registerCarrierComponents()
+    {
+        Livewire::component('hub.components.carriers.index', CarriersIndex::class);
+        Livewire::component('hub.components.carriers.table', CarriersTable::class);
+        Livewire::component('hub.components.carriers.show', CarrierShow::class);
+        Livewire::component('hub.components.carriers.create', CarrierCreate::class);
     }
 
     /**

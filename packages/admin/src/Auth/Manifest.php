@@ -114,6 +114,11 @@ class Manifest
                 'vendors:vendors',
                 __('ベンダー')
             ),
+            new Permission(
+                __('物流業者'),
+                'carriers:carriers',
+                __('物流業者')
+            ),
             //配送管理
             new Permission(
                 __('配送管理'),

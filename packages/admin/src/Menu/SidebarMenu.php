@@ -81,6 +81,16 @@ final class SidebarMenu
                 ->route('hub.vendors.index');
         });
 
+        $carrierGroup = $slot
+            ->group('hub.carriers')
+            ->name('物流業者');
+        $carrierGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name('物流業者管理')
+                ->handle('hub.carriers')
+                ->route('hub.carriers.index');
+        });
+
 
         $deliveryGroup = $slot
             ->group('hub.deliveries')
