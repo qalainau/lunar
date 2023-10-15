@@ -163,7 +163,7 @@ final class SidebarMenu
 
         $salesGroup->addItem(function ($menuItem) {
             $menuItem
-                ->name(__('adminhub::menu.sidebar.customers'))
+                ->name(__('顧客'))
                 ->handle('hub.customers')
                 ->route('hub.customers.index')
                 ->icon('users');
