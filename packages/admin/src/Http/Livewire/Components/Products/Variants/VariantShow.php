@@ -154,6 +154,7 @@ class VariantShow extends Component
                 'variant.volume_value' => 'numeric|nullable',
                 'variant.volume_unit' => 'string|nullable',
                 'variant.shippable' => 'boolean|nullable',
+                'variant.is_cool' => 'boolean|nullable',
                 'variant.backorder' => 'numeric|max:10000000',
                 'variant.tax_ref' => 'nullable|string|max:255',
                 'variant.purchasable' => 'string|required',
@@ -192,7 +193,7 @@ class VariantShow extends Component
     {
         $this->validate(null, $this->getValidationMessages());
 
-        if (! $this->manualVolume) {
+        if (!$this->manualVolume) {
             $this->variant->volume_unit = null;
             $this->variant->volume_value = null;
         }
@@ -242,7 +243,7 @@ class VariantShow extends Component
                 }
 
                 if (empty($image['id']) || $imageEdited) {
-                    if (! $imageEdited) {
+                    if (!$imageEdited) {
                         $file = TemporaryUploadedFile::createFromLivewire(
                             $image['filename']
                         );
@@ -357,7 +358,7 @@ class VariantShow extends Component
     {
         $this->image = $this->product
             ->images
-            ->first(fn ($image) => $image->id == $this->imageToSelect);
+            ->first(fn($image) => $image->id == $this->imageToSelect);
 
         $this->showImageSelectModal = false;
         $this->imageToSelect = null;
@@ -366,7 +367,7 @@ class VariantShow extends Component
     /**
      * Refresh and select option.
      *
-     * @param  array  $event
+     * @param array $event
      * @return void
      */
     public function refreshAndSelectOption($event)
@@ -444,8 +445,8 @@ class VariantShow extends Component
         $messages = [];
 
         foreach ($this->variantOptions() as $option) {
-            $rules['newValues.'.$option->id] = 'required';
-            $messages['newValues.'.$option->id.'.required'] = __('adminhub::validation.variant_option_required');
+            $rules['newValues.' . $option->id] = 'required';
+            $messages['newValues.' . $option->id . '.required'] = __('adminhub::validation.variant_option_required');
         }
 
         $this->validate($rules, $messages);

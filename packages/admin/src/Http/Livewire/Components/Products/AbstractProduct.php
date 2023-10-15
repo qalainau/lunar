@@ -256,6 +256,7 @@ abstract class AbstractProduct extends Component
                     'variant.volume_value' => 'numeric|nullable',
                     'variant.volume_unit' => 'string|nullable',
                     'variant.shippable' => 'boolean|nullable',
+                    'variant.is_cool' => 'boolean|nullable',
                     'variant.tax_ref' => 'nullable|string|max:255',
                     'variant.unit_quantity' => 'required|numeric|min:1|max:10000000',
                 ]
@@ -926,6 +927,7 @@ abstract class AbstractProduct extends Component
                     'variant.weight_unit',
                     'variant.volume_value',
                     'variant.volume_unit',
+                    'variant.is_cool',
                 ]),
             ],
             [
