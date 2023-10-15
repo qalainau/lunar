@@ -4,6 +4,7 @@ namespace Lunar\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Lunar\Base\BaseModel;
 use Lunar\Base\Traits\HasMacros;
 use Lunar\Base\Traits\HasMedia;
@@ -11,6 +12,7 @@ use Lunar\Base\Traits\HasUrls;
 use Lunar\Base\Traits\LogsActivity;
 use Lunar\Base\Traits\Searchable;
 use Lunar\Database\Factories\BrandFactory;
+use Lunar\Hub\Models\Staff;
 use Spatie\MediaLibrary\HasMedia as SpatieHasMedia;
 
 /**
@@ -62,7 +64,7 @@ class Brand extends BaseModel implements SpatieHasMedia
      */
     public function searchableAs(): string
     {
-        return config('scout.prefix').'brands';
+        return config('scout.prefix') . 'brands';
     }
 
     /**
@@ -84,5 +86,10 @@ class Brand extends BaseModel implements SpatieHasMedia
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function staff(): HasOne
+    {
+        return $this->hasOne(Staff::class);
     }
 }

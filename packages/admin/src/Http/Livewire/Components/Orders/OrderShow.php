@@ -434,6 +434,10 @@ class OrderShow extends Component
         // $this->validate($addressRules->toArray());
 
         // $this->order->order_id = $this->order->id;
+
+        if ($this->order->delivery_number != "") {
+            $this->order->status = "slip-shipped";
+        }
         $this->order->save();
 
 
