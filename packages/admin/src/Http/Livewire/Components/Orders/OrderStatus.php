@@ -105,16 +105,27 @@ class OrderStatus extends Component
      */
     public function getAvailableMailersProperty()
     {
+
+
         return collect(
             $this->statuses[$this->newStatus]['mailers'] ?? []
         )->mapWithKeys(function ($mailer) {
+
+            $name = 'hogehoge';
+            if (class_basename($mailer) == 'PaymentReceivedMailer') {
+                $name = '注文確定メール';
+            }
+
+
             return [
-                Str::snake(class_basename($mailer)) => [
-                    'name' => Str::title(
-                        Str::snake(class_basename($mailer), ' ')
-                    ),
-                    'class' => $mailer,
-                ],
+//                Str::snake(class_basename($mailer)) => [
+//                    'name' => Str::title(
+//                        Str::snake(class_basename($mailer), ' ')
+//                    ),
+//                    'class' => $mailer,
+//                ],
+                ['name' => $name,
+                    'class' => $mailer,]
             ];
         });
     }
@@ -133,11 +144,13 @@ class OrderStatus extends Component
     {
         $mailer = $this->availableMailers[$this->previewTemplate] ?? null;
 
-        if (! $mailer) {
+        if (!$mailer) {
             return 'Unable to load preview';
         }
 
-        return trim($this->buildMailer($mailer['class'])->render());
+        //return trim($this->buildMailer($mailer['class'])->render());
+        $mail_content = trim($this->buildMailer($mailer['class'])->render());
+        return nl2br($mail_content);
     }
 
     public function buildMailer($class)
@@ -169,7 +182,7 @@ class OrderStatus extends Component
 
                 if (method_exists($mailable, 'render')) {
                 }
-                $storedPath = 'orders/activity/'.Str::random().'.html';
+                $storedPath = 'orders/activity/' . Str::random() . '.html';
 
                 $storedMailer = Storage::put(
                     $storedPath,
@@ -177,14 +190,14 @@ class OrderStatus extends Component
                 );
 
                 activity()
-                ->causedBy(auth()->user())
-                ->performedOn($this->order)
-                ->event('email-notification')
-                ->withProperties([
-                    'template' => $storedPath,
-                    'email' => $email,
-                    'mailer' => $mailer['name'],
-                ])->log('email-notification');
+                    ->causedBy(auth()->user())
+                    ->performedOn($this->order)
+                    ->event('email-notification')
+                    ->withProperties([
+                        'template' => $storedPath,
+                        'email' => $email,
+                        'mailer' => $mailer['name'],
+                    ])->log('email-notification');
             }
         }
 
