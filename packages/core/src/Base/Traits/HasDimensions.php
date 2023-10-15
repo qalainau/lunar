@@ -31,7 +31,7 @@ trait HasDimensions
      */
     public function getLengthAttribute()
     {
-        $unit = $this->length_unit ?: 'mm';
+        $unit = $this->length_unit ?: 'cm';
 
         return Converter::from("length.{$unit}")->value($this->length_value ?: 0);
     }
@@ -43,7 +43,7 @@ trait HasDimensions
      */
     public function getWidthAttribute()
     {
-        $unit = $this->width_unit ?: 'mm';
+        $unit = $this->width_unit ?: 'cm';
 
         return Converter::from("length.{$unit}")->value($this->width_value ?: 0);
     }
@@ -55,7 +55,7 @@ trait HasDimensions
      */
     public function getHeightAttribute()
     {
-        $unit = $this->height_unit ?: 'mm';
+        $unit = $this->height_unit ?: 'cm';
 
         return Converter::from("length.{$unit}")->value($this->height_value ?: 0);
     }
@@ -67,7 +67,7 @@ trait HasDimensions
      */
     public function getWeightAttribute()
     {
-        $unit = $this->weight_unit ?: 'mm';
+        $unit = $this->weight_unit ?: 'kg';
 
         return Converter::from("weight.{$unit}")->value($this->weight_value ?: 0);
     }
@@ -88,6 +88,7 @@ trait HasDimensions
         $width = $this->width->to('length.cm')->convert()->getValue();
         $height = $this->height->to('length.cm')->convert()->getValue();
 
+//        return Converter::from('volume.ml')->to('volume.l')->value($length * $width * $height)->convert();
         return Converter::from('volume.ml')->to('volume.l')->value($length * $width * $height)->convert();
     }
 }
