@@ -47,7 +47,7 @@ class StaffTable extends LunarTable
                 return $record->email;
             })->gravatar()->heading(false),
             StatusColumn::make('active', function ($record) {
-                return ! $record->deleted_at;
+                return !$record->deleted_at;
             }),
             TextColumn::make('name', function ($record) {
                 return $record->fullName;
@@ -61,7 +61,7 @@ class StaffTable extends LunarTable
     /**
      * Remove a saved search record.
      *
-     * @param  int  $id
+     * @param int $id
      * @return void
      */
     public function deleteSavedSearch($id)
@@ -130,6 +130,6 @@ class StaffTable extends LunarTable
             $query->search($this->query, true);
         }
 
-        return $query->whereNull('brand_id')->withTrashed()->paginate($this->perPage);
+        return $query->whereNull('brand_id')->where('is_carrier', 0)->withTrashed()->paginate($this->perPage);
     }
 }
