@@ -47,6 +47,19 @@ final class SidebarMenu
     {
         $slot = Menu::slot('sidebar');
 
+
+        $sliderGroup = $slot
+            ->group('hub.slider')
+            ->name('スライド管理');
+        $sliderGroup->addItem(function ($menuItem) {
+            $menuItem
+                ->name('スライド管理')
+                ->handle('hub.slider')
+                ->icon('photograph')
+                ->route('hub.sliders.index');
+        });
+
+
         $catalogueGroup = $slot
             ->group('hub.catalogue')
             ->name(__('adminhub::menu.sidebar.catalogue'));

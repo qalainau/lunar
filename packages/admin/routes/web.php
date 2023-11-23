@@ -34,6 +34,9 @@ Route::group([
         $router->get('/', Hub::class)->name('hub.index');
 
         Route::get('account', Account::class)->name('hub.account');
+        Route::group([
+            'prefix' => 'sliders',
+        ], __DIR__ . '/includes/sliders.php');
 
         Route::group([
             'prefix' => 'products',

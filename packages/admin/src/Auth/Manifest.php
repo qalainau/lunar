@@ -90,6 +90,12 @@ class Manifest
     {
         return [
             new Permission(
+                __('スライダー管理'),
+                'sliders:sliders',
+                __('スライダー管理')
+            ),
+
+            new Permission(
                 __('adminhub::auth.permissions.settings.name'),
                 'settings',
                 __('adminhub::auth.permissions.settings.description')

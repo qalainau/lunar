@@ -101,6 +101,8 @@ use Lunar\Hub\Http\Livewire\Components\Settings\Branches\BranchesIndex;
 use Lunar\Hub\Http\Livewire\Components\Settings\Branches\BranchShow;
 
 
+use Lunar\Hub\Http\Livewire\Components\Sliders\SliderEdit;
+use Lunar\Hub\Http\Livewire\Components\Sliders\SlidersIndex;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorShow;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorsIndex;
 use Lunar\Hub\Http\Livewire\Components\Vendors\VendorCreate;
@@ -297,6 +299,7 @@ class AdminHubServiceProvider extends ServiceProvider
         $this->registerCarrierComponents();
         $this->registerDeliveryComponents();
         $this->registerReportComponents();
+        $this->registerSliderComponents();
         $this->registerPointComponents();
         $this->registerVendorSettingsComponents();
 
@@ -449,6 +452,12 @@ class AdminHubServiceProvider extends ServiceProvider
     {
         Livewire::component('hub.components.reports.index', ReportsIndex::class);
         Livewire::component('hub.components.reports.order_line', ReportsOrderLine::class);
+    }
+
+    protected function registerSliderComponents()
+    {
+        Livewire::component('hub.components.sliders.index', SlidersIndex::class);
+        Livewire::component('hub.components.sliders.edit', SliderEdit::class);
     }
 
     /**
