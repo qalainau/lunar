@@ -42,7 +42,7 @@ class SliderEdit extends Component implements Forms\Contracts\HasForms
     public function mount($id)
     {
         $this->slide = \App\Models\Slider::find($id);
-        ray($this->slide->id)->label('s最初');
+        // ray($this->slide->id)->label('s最初');
         if (empty($this->slide)) {
             return null;
         }
@@ -50,6 +50,8 @@ class SliderEdit extends Component implements Forms\Contracts\HasForms
         $this->form->fill([
             'image' => $this->slide->image ?? '',
             'is_show' => $this->slide->is_show,
+            'link' => $this->slide->link ?? '',
+            'is_newtab' => $this->slide->is_newtab,
         ]);
 
     }
