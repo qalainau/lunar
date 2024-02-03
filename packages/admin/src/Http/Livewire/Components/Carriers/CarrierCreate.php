@@ -66,7 +66,8 @@ class CarrierCreate extends AbstractStaff
         //  $this->staff->brand_id = $brand->id;
 
         $this->staff->save();
-        $this->staffPermissions = collect(['catalogue:manage-orders']);
+
+        $this->staffPermissions = collect(['catalogue:manage-orders', 'deliveries:deliveries']);
 
         // $this->staff->staffPermissions=['catalogue:manage-products'=>true,];
         $this->syncPermissions();
