@@ -35,6 +35,7 @@ class VendorShow extends AbstractStaff
     {
         $this->staffPermissions = $this->staff->permissions->pluck('handle');
         $this->branch_id = $this->staff->brand->branch_id;
+        $this->carrier_id = $this->staff->brand->carrier_id;
     }
 
     /**
@@ -54,6 +55,7 @@ class VendorShow extends AbstractStaff
             'staff.post_code' => 'string|max:255',
             'staff.admin' => 'nullable|boolean',
             'branch_id' => 'required|integer',
+            'carrier_id' => 'required|integer',
             'password' => 'nullable|min:8|max:255|confirmed',
         ];
     }
@@ -127,6 +129,7 @@ class VendorShow extends AbstractStaff
         $this->staff->save();
         $this->staff->brand->name = $this->staff->lastname;
         $this->staff->brand->branch_id = $this->branch_id;
+        $this->staff->brand->carrier_id = $this->carrier_id;
         $this->staff->brand->save();
 
         //  $this->syncPermissions();

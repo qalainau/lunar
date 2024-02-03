@@ -17,6 +17,7 @@ class VendorCreate extends AbstractStaff
     {
         $this->staff = new Staff();
         $this->staffPermissions = $this->staff->permissions->pluck('handle');
+        $this->carrier_id = 0;
     }
 
     /**
@@ -38,8 +39,10 @@ class VendorCreate extends AbstractStaff
             'password' => 'required|min:8|max:255|confirmed',
             'password_confirmation' => 'string',
             'branch_id' => 'required|integer',
+            'carrier_id' => 'required|integer',
         ];
     }
+
 
     /**
      * Create the staff member.
@@ -60,6 +63,7 @@ class VendorCreate extends AbstractStaff
         $brand = new \Lunar\Models\Brand([
             'name' => $this->staff->lastname,
             'branch_id' => $this->branch_id,
+            'carrier_id' => $this->carrier_id,
         ]);
         $brand->save();
         $this->staff->brand_id = $brand->id;
