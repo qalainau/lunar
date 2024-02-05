@@ -115,7 +115,9 @@ class OrderStatus extends Component
             if (class_basename($mailer) == 'PaymentReceivedMailer') {
                 $name = '注文確定メール';
             }
-
+            if (class_basename($mailer) == 'DispatchedMailer') {
+                $name = '発送完了メール';
+            }
 
             return [
 //                Str::snake(class_basename($mailer)) => [

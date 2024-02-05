@@ -59,14 +59,14 @@ class OrdersTable extends Table
     public function build()
     {
         $this->filters['placed_at'] = $this->filters['placed_at'] ?? null;
+        $this->filters['vendor'] = $this->filters['vendor'] ?? 999999;
 
         $this->tableBuilder->addFilter(
             SelectFilter::make('status')->options(function () {
                 $statuses = collect(
                     config('lunar.orders.statuses'),
                     []
-                )->mapWithKeys(fn ($status, $key) => [$key => $status['label']]);
-
+                )->mapWithKeys(fn($status, $key) => [$key => $status['label']]);
                 return collect([
                     null => 'All Statuses',
                 ])->merge($statuses);
@@ -79,77 +79,131 @@ class OrdersTable extends Table
             })
         );
 
+//        $this->tableBuilder->addFilter(
+//            SelectFilter::make('tags')->options(function () {
+//                $tagTable = (new Tag)->getTable();
+//
+//                $tags = DB::connection(config('lunar.database.connection'))
+//                    ->table(config('lunar.database.table_prefix') . 'taggables')
+//                    ->join($tagTable, 'tag_id', '=', "{$tagTable}.id")
+//                    ->whereTaggableType(Order::class)
+//                    ->distinct()
+//                    ->pluck('value')
+//                    ->map(function ($value) {
+//                        return [
+//                            'value' => $value,
+//                            'label' => $value,
+//                        ];
+//                    });
+//
+//                return collect([
+//                    null => 'None',
+//                ])->merge($tags);
+//            })->query(function ($filters, $query) {
+//                $value = $filters->get('tags');
+//
+//                if ($value) {
+//                    $query->whereHas('tags', function ($query) use ($value) {
+//                        $query->whereValue($value);
+//                    });
+//                }
+//            })
+//        );
+
+//        $this->tableBuilder->addFilter(
+//            SelectFilter::make('new_returning')->options(function () {
+//                return collect([
+//                    null => 'Both',
+//                    'new' => 'New',
+//                    'returning' => 'Returning',
+//                ]);
+//            })->query(function ($filters, $query) {
+//                $value = $filters->get('new_returning');
+//
+//                if ($value) {
+//                    $query->whereNewCustomer(
+//                        $value == 'new'
+//                    );
+//                }
+//            })
+//        );
+
         $this->tableBuilder->addFilter(
-            SelectFilter::make('tags')->options(function () {
-                $tagTable = (new Tag)->getTable();
+            SelectFilter::make('vendor')
+                ->heading('販売元')
+                ->options(function () {
+                    if (\Auth::user()->is_carrier) {
+                        $vendors = \Lunar\Models\Brand::where('carrier_id', \Auth::user()->id)->get()->pluck('name', 'id');
+                    } else {
+                        $vendors = \Lunar\Models\Brand::all()->pluck('name', 'id');
+                    }
 
-                $tags = DB::connection(config('lunar.database.connection'))
-                ->table(config('lunar.database.table_prefix').'taggables')
-                ->join($tagTable, 'tag_id', '=', "{$tagTable}.id")
-                ->whereTaggableType(Order::class)
-                ->distinct()
-                ->pluck('value')
-                ->map(function ($value) {
-                    return [
-                        'value' => $value,
-                        'label' => $value,
-                    ];
-                });
 
-                return collect([
-                    null => 'None',
-                ])->merge($tags);
-            })->query(function ($filters, $query) {
-                $value = $filters->get('tags');
+                    ray($vendors);
+                    // $vendors->push('全て');
+                    $vendors->put(999999, "全て");
+                    $vendors->sortBy('id');
+                    // Convert the collection to an array
+                    $array = $vendors->toArray();
+// Sort the array by keys
+                    krsort($array);
 
-                if ($value) {
-                    $query->whereHas('tags', function ($query) use ($value) {
-                        $query->whereValue($value);
-                    });
-                }
-            })
+// Convert back to a collection if needed
+                    $vendors = collect($array);
+                    ray($vendors);
+                    return collect($vendors);
+
+//                    return collect([
+//                        null => '全て',
+//                    ])->merge($vendors);
+                })->query(function ($filters, $query) {
+                    $value = $filters->get('vendor');
+                    if ($value && $value != 999999) {
+                        $query->where(
+                            'brand_id',
+                            $value
+                        );
+                    }
+                    if (\Auth::user()->is_carrier) {
+                        $vendors = \Lunar\Models\Brand::where('carrier_id', \Auth::user()->id)->get();
+                        $brand_ids = [];
+                        foreach ($vendors as $vendor) {
+                            $brand_ids[] = $vendor->id;
+                        }
+                        ray($brand_ids)->green();
+                        $query->whereIn('brand_id', $brand_ids);
+                    }
+                })
         );
 
-        $this->tableBuilder->addFilter(
-            SelectFilter::make('new_returning')->options(function () {
-                return collect([
-                    null => 'Both',
-                    'new' => 'New',
-                    'returning' => 'Returning',
-                ]);
-            })->query(function ($filters, $query) {
-                $value = $filters->get('new_returning');
-
-                if ($value) {
-                    $query->whereNewCustomer(
-                        $value == 'new'
-                    );
-                }
-            })
-        );
 
         $this->tableBuilder->addFilter(
             DateFilter::make('placed_at')
-                ->heading('Placed at')
+                ->heading('購入日')
                 ->query(function ($filters, $query) {
                     $value = $filters->get('placed_at');
-
-                    if (! $value) {
+                    ray($value)->green();
+                    if (!$value) {
                         return $query;
                     }
 
                     $parts = explode(' to ', $value);
 
-                    if (empty($parts[1])) {
-                        return $query;
-                    }
+//                    if (empty($parts[1])) {
+//                        return $query;
+//                    }
 
+                    if (empty($parts[1])) {
+                        $parts[1] = $parts[0];
+                    }
+                    ray($parts)->red();
                     $query->whereBetween('placed_at', [
-                        $parts[0],
-                        $parts[1],
+                        $parts[0] . ' 00:00:00',
+                        $parts[1] . ' 23:59:59',
                     ]);
                 })
         );
+
 
         $this->tableBuilder->addAction(
             Action::make('view')->label('View Order')->url(function ($record) {
@@ -162,12 +216,13 @@ class OrdersTable extends Table
                 ->label('Update Status')
                 ->livewire('hub.components.tables.actions.update-status')
         );
+
     }
 
     /**
      * Remove a saved search record.
      *
-     * @param  int  $id
+     * @param int $id
      * @return void
      */
     public function deleteSavedSearch($id)
@@ -235,7 +290,8 @@ class OrdersTable extends Table
             return Order::whereCustomerId($this->customerId)
                 ->paginate($this->perPage);
         }
-ray($query);
+        ray($filters)->red();
+        // ray($query)->red();
         return $this->tableBuilder
             ->searchTerm($query)
             ->queryStringFilters($filters)
