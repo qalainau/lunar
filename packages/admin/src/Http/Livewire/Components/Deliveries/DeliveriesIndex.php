@@ -305,13 +305,18 @@ class DeliveriesIndex extends Component implements Tables\Contracts\HasTable
                             ray($state)->green();
                             if ($state == 'dispatched') {
                                 $record->status = $state;
-                                ray($record->tax_breakdown);
-                                $record->tax_breakdown = $record->tax_breakdown->map(function ($tax) {
+                                ray($record->tax_breakdown)->red()->label('tax_breakdown');
+                                $record->tax_breakdown = $record->tax_breakdown->map(function ($tax) use ($record) {
+                                    ray($record->tax_total)->red()->label('tax_total');
+                                    if (!isset($record->tax_total->value)) {
+                                        $record->tax_total->value = 0;
+                                    }
                                     return [
                                         'description' => $tax->description,
                                         'identifier' => $tax->identifier,
                                         'percentage' => $tax->percentage,
-                                        'total' => $tax->total->value,
+                                        // 'total' => $tax->total->value,
+                                        'total' => (int)$record->tax_total->value,
                                     ];
                                 })->values();
 
