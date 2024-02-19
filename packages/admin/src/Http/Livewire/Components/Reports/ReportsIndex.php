@@ -50,6 +50,7 @@ class ReportsIndex extends Component implements Tables\Contracts\HasTable
     {
 
         if (\Auth::user()->brand_id) {
+            ray('brand_id');
             return \App\Models\OrderLine::select(
                 DB::raw('MIN(lunar_order_lines.id) as id'),
                 DB::raw('sum(lunar_order_lines.total) as total'),
@@ -63,7 +64,7 @@ class ReportsIndex extends Component implements Tables\Contracts\HasTable
                 ->where('type', '=', 'physical')
                 ->where('lunar_order_lines.brand_id', '=', \Auth::user()->brand_id)
                 ->orderBy('lunar_order_lines.brand_id', 'DESC')
-                ->groupBy('lunar_order_lines.brand_id');
+                ->groupBy('lunar_order_lines.brand_id', 'lunar_brands.carrier_id');
         }
 
         return \App\Models\OrderLine::

@@ -292,7 +292,7 @@ class DeliveriesIndex extends Component implements Tables\Contracts\HasTable
                     ->disableOptionWhen(
                         function ($record) {
                             if ($record->status == 'dispatched' || $record->status == 'order-received'
-                                || $record->status == 'slip-shipped' || $record->status == 'payment-received') {
+                                || $record->status == 'payment-received') {
                                 return true;
                             }
                             return false;
