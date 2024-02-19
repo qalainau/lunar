@@ -625,8 +625,7 @@ class DeliveriesIndex extends Component implements Tables\Contracts\HasTable
                         return $query->whereNot('lunar_orders.status', 'dispatched');
                     }
                     return $query;
-                })
-                ->default('dispatched'),
+                }),
 
         ];
     }
