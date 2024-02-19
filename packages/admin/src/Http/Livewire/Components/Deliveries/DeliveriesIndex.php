@@ -611,6 +611,23 @@ class DeliveriesIndex extends Component implements Tables\Contracts\HasTable
                 ->default(function () use ($dates) {
                     return array_key_last($dates);
                 })->label('年月'),
+
+            SelectFilter::make('order.status')
+                ->label('状態')
+                ->options(
+                    [
+
+                        'dispatched' => '発送済を除く',
+                    ]
+                )
+                ->query(function (Builder $query, array $data): Builder {
+                    if ($this->tableFilters['order']['status']['value'] === 'dispatched') {
+                        return $query->whereNot('lunar_orders.status', 'dispatched');
+                    }
+                    return $query;
+                })
+                ->default('dispatched'),
+
         ];
     }
 
