@@ -20,7 +20,8 @@ use Filament\Forms;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Fieldset;
-class PointsIndex extends Component  implements Tables\Contracts\HasTable
+
+class PointsIndex extends Component implements Tables\Contracts\HasTable
 {
 
     use Tables\Concerns\InteractsWithTable;
@@ -37,6 +38,7 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
         //if(isset($tableF))
         return \App\Models\PointExchange::query()->orderBy('requested_at', 'desc');
     }
+
     protected function getTableColumns(): array
     {
 
@@ -45,15 +47,12 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
             //\Filament\Tables\Columns\ToggleColumn::make('status'),
 
 
-
-
             //Tables\Columns\TextColumn::make('id')->label('id')->alignCenter(),
 //            use Filament\Tables\Columns\Layout\Panel;
 //            use Filament\Tables\Columns\TextColumn;
 //
 //use Filament\Tables\Columns\Layout\Split;
 //use Filament\Tables\Columns\Layout\Stack;
-
 
 
 //            Tables\Columns\TextColumn::make('exchanged_at')->formatStateUsing(function ($state, $record) {
@@ -75,14 +74,16 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
                         'キャンセル' => 'キャンセル',
                     ])
                     ->updateStateUsing(function ($record, $state) {
-                        $record->exchanged_at=now();
+                        $record->exchanged_at = now();
+                        $record->status = $state;
                         $record->save();
+                        return $state;
                     })
                     ->disablePlaceholderSelection(),
                 \Filament\Tables\Columns\BadgeColumn::make('status2')
                     ->formatStateUsing(function ($state, $record) {
                         ray($record);
-                        $record->status2=$record->status;
+                        $record->status2 = $record->status;
                         return $record->status;
                     })
                     ->colors([
@@ -119,6 +120,7 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
             ])->collapsible(),
         ];
     }
+
     protected function getTableActions(): array
     {
         return [
@@ -126,8 +128,8 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
             Tables\Actions\Action::make('order-line')
                 ->label('顧客詳細情報')
                 ->url(
-                    function ($record){
-                            return '/hub/customers/'.$record->customer_id;
+                    function ($record) {
+                        return '/hub/customers/' . $record->customer_id;
                     }
                 )->size('sm')
                 ->icon('heroicon-o-link'),
@@ -137,7 +139,6 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
             //   ]),
         ];
     }
-
 
 
     protected function isTablePaginationEnabled(): bool
@@ -184,22 +185,21 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
                     Grid::make(5)
                         ->schema([
                             DatePicker::make('from')->displayFormat('Y年n月d日')->label('依頼日:抽出開始日')->columnSpan(1),
-                            DatePicker::make('until')->displayFormat('Y年n月d日')->label('依頼日:抽出終了日') ->columnSpan(1),
+                            DatePicker::make('until')->displayFormat('Y年n月d日')->label('依頼日:抽出終了日')->columnSpan(1),
                             // ...
                         ]),
 
 
-
                 ])
-                ->query(function (Builder $query, array $data) : Builder {
+                ->query(function (Builder $query, array $data): Builder {
                     return $query
                         ->when(
-                        $data['from'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('requested_at', '>=', $data['from']),
+                            $data['from'],
+                            fn(Builder $query, $date): Builder => $query->whereDate('requested_at', '>=', $data['from']),
                         )
                         ->when(
                             $data['until'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('requested_at', '<=',   $data['until']),
+                            fn(Builder $query, $date): Builder => $query->whereDate('requested_at', '<=', $data['until']),
                         );
                 })
                 ->indicateUsing(function (array $data): array {
@@ -251,7 +251,6 @@ class PointsIndex extends Component  implements Tables\Contracts\HasTable
 //                })->default(function() use($dates){
 //                    return array_key_last($dates);
 //                })->label('年月'),
-
 
 
         ];
