@@ -117,12 +117,12 @@ class ReportsIndex extends Component implements Tables\Contracts\HasTable
             Tables\Columns\TextColumn::make('commission')->formatStateUsing(function ($state, $record) {
                 $commission = 0;
                 if (isset($record->total->value)) {
-                    $commission = round($record->total->value / 100 * 7);
+                    $commission = round($record->total->value / 100 * 10);
                     $record->commission = $commission;
                     $record->payment = $record->total->value - $commission;
                 }
                 return number_format($commission) . '円';
-            })->label('手数料(7%)')->alignRight(),
+            })->label('手数料(10%)')->alignRight(),
             Tables\Columns\TextColumn::make('carrier_id')->label('指定配送業者')
                 ->formatStateUsing(
                     function ($state) {
@@ -190,7 +190,7 @@ class ReportsIndex extends Component implements Tables\Contracts\HasTable
                 $payment = 0;
                 $carrier_name = '';
                 if (isset($record->total->value)) {
-                    $commission = round($record->total->value / 100 * 7);
+                    $commission = round($record->total->value / 100 * 10);
                     $payment = $record->total->value - $commission;
                 }
                 $carrier = \Lunar\Hub\Models\Staff::find($record->carrier_id);
