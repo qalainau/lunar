@@ -111,9 +111,9 @@ class Manifest
                 __('adminhub::auth.permissions.settings.staff.description')
             ),
             new Permission(
-                __('支部'),
+                __('エリア名'),
                 'settings:manage-branches',
-                __('支部')
+                __('エリア名')
             ),
             new Permission(
                 __('ベンダー'),

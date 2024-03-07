@@ -143,7 +143,7 @@ final class SettingsMenu
         });
 
         $adminSection->addItem(function (MenuLink $item) {
-            $item->name('支部')
+            $item->name('エリア名')
                 ->handle('hub.branches')
                 ->route('hub.branches.index')
                 ->gate('settings:manage-branches')
