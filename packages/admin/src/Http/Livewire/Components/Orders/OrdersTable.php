@@ -132,7 +132,9 @@ class OrdersTable extends Table
             SelectFilter::make('vendor')
                 ->heading('販売元')
                 ->options(function () {
-                    if (\Auth::user()->is_carrier) {
+                    if (\Auth::user()->brand_id) {
+                        $vendors = \Lunar\Models\Brand::where('id', \Auth::user()->brand_id)->get()->pluck('name', 'id');
+                    } elseif (\Auth::user()->is_carrier) {
                         $vendors = \Lunar\Models\Brand::where('carrier_id', \Auth::user()->id)->get()->pluck('name', 'id');
                     } else {
                         $vendors = \Lunar\Models\Brand::all()->pluck('name', 'id');
@@ -163,6 +165,15 @@ class OrdersTable extends Table
                             'brand_id',
                             $value
                         );
+                    }
+                    if (\Auth::user()->brand_id) {
+                        $vendors = \Lunar\Models\Brand::where('id', \Auth::user()->id)->get();
+                        $brand_ids = [];
+                        foreach ($vendors as $vendor) {
+                            $brand_ids[] = $vendor->id;
+                        }
+                        ray($brand_ids)->green();
+                        $query->whereIn('brand_id', $brand_ids);
                     }
                     if (\Auth::user()->is_carrier) {
                         $vendors = \Lunar\Models\Brand::where('carrier_id', \Auth::user()->id)->get();

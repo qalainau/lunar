@@ -149,6 +149,12 @@ class OrderShow extends Component
         $this->shippingAddress = $this->order->shippingAddress ?: new OrderAddress();
 
         $this->billingAddress = $this->order->billingAddress ?: new OrderAddress();
+        if (\Auth::user()->brand_id) {
+            ray($this->order->brand_id);
+            if (\Auth::user()->brand_id != $this->order->brand_id) {
+                abort(403);
+            }
+        }
         //$this->
 
     }
