@@ -54,6 +54,8 @@ class VendorsTable extends LunarTable
             })->url(function ($record) {
                 return route('hub.vendors.show', $record->id);
             }),
+            TextColumn::make('company_name')->heading('会社名'),
+            TextColumn::make('first_name')->heading('会員氏名'),
             TextColumn::make('email'),
             TextColumn::make('brand_id')->heading('ベンダーID'),
         ]);

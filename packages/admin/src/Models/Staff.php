@@ -31,6 +31,7 @@ class Staff extends Authenticatable
     protected $fillable = [
         'firstname',
         'lastname',
+        'company_name',
         'admin',
         'email',
         'password',
@@ -62,7 +63,7 @@ class Staff extends Authenticatable
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('lunar.database.table_prefix').$this->getTable());
+        $this->setTable(config('lunar.database.table_prefix') . $this->getTable());
 
         if ($connection = config('lunar.database.connection', false)) {
             $this->setConnection($connection);
@@ -75,8 +76,8 @@ class Staff extends Authenticatable
      * Currently Livewire doesn't support route bindings for
      * soft deleted models so we need to rewire it here.
      *
-     * @param  mixed  $value
-     * @param  string|null  $field
+     * @param mixed $value
+     * @param string|null $field
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function resolveRouteBinding($value, $field = null)
@@ -95,11 +96,11 @@ class Staff extends Authenticatable
     /**
      * Authorize an action via permissions.
      *
-     * @param  string  $permission
+     * @param string $permission
      */
     public function authorize($permission): bool
     {
-        if (! is_array($permission)) {
+        if (!is_array($permission)) {
             $permission = [$permission];
         }
 
@@ -109,8 +110,8 @@ class Staff extends Authenticatable
     /**
      * Apply the basic search scope to a given Eloquent query builder.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $term
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $term
      * @return void
      */
     public function scopeSearch($query, $term)
@@ -120,8 +121,8 @@ class Staff extends Authenticatable
 
             foreach ($parts as $part) {
                 $query->where('email', 'LIKE', "%$part%")
-                        ->orWhere('firstname', 'LIKE', "%$part%")
-                        ->orWhere('lastname', 'LIKE', "%$part%");
+                    ->orWhere('firstname', 'LIKE', "%$part%")
+                    ->orWhere('lastname', 'LIKE', "%$part%");
             }
         }
     }
@@ -133,7 +134,7 @@ class Staff extends Authenticatable
      */
     public function getFullNameAttribute()
     {
-        return $this->firstname.' '.$this->lastname;
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     /**

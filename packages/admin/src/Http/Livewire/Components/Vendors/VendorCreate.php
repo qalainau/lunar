@@ -31,6 +31,7 @@ class VendorCreate extends AbstractStaff
             'staffPermissions' => 'array',
             'staff.email' => 'required|email|unique:' . get_class($this->staff) . ',email',
             'staff.firstname' => 'string|max:255',
+            'staff.company_name' => 'string|max:255',
             'staff.lastname' => 'required|string|max:255',
             'staff.phone_number' => 'string|max:255',
             'staff.address' => 'string|max:255',
