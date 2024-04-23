@@ -65,28 +65,29 @@ class ProductsTable extends Table
             })
         );
 
-        $this->tableBuilder->addFilter(
-            CheckboxFilter::make('deleted')->query(function ($filters, $query) {
-                $value = $filters->get('deleted');
+//        $this->tableBuilder->addFilter(
+//            CheckboxFilter::make('deleted')->query(function ($filters, $query) {
+//                $value = $filters->get('deleted');
+//
+//                if ($value) {
+//                    $query->onlyTrashed();
+//                }
+//            })
+//        );
 
-                if ($value) {
-                    $query->onlyTrashed();
-                }
-            })
-        );
 
         $this->tableBuilder->baseColumns([
             BadgeColumn::make('status', function ($record) {
                 return __(
-                    'adminhub::components.products.index.'.($record->deleted_at ? 'deleted' : $record->status)
+                    'adminhub::components.products.index.' . ($record->deleted_at ? 'deleted' : $record->status)
                 );
             })->states(function ($record) {
                 return [
-                    'success' => $record->status == 'published' && ! $record->deleted_at,
-                    'warning' => $record->status == 'request' && ! $record->deleted_at,
-                    'info' => $record->status == 'draft' && ! $record->deleted_at,
-                    'danger' => $record->status == 'send_back' && ! $record->deleted_at,
-                    'default' => (bool) $record->deleted_at,
+                    'success' => $record->status == 'published' && !$record->deleted_at,
+                    'warning' => $record->status == 'request' && !$record->deleted_at,
+                    'info' => $record->status == 'draft' && !$record->deleted_at,
+                    'danger' => $record->status == 'send_back' && !$record->deleted_at,
+                    'default' => (bool)$record->deleted_at,
                 ];
             }),
             ImageColumn::make('thumbnail', function ($record) {
@@ -135,7 +136,7 @@ class ProductsTable extends Table
     /**
      * Remove a saved search record.
      *
-     * @param  int  $id
+     * @param int $id
      * @return void
      */
     public function deleteSavedSearch($id)
@@ -211,9 +212,9 @@ class ProductsTable extends Table
         }
 
         return $this->tableBuilder
-        ->searchTerm($query)
-        ->queryStringFilters($filters)
-        ->perPage($this->perPage)
-        ->getData();
+            ->searchTerm($query)
+            ->queryStringFilters($filters)
+            ->perPage($this->perPage)
+            ->getData();
     }
 }

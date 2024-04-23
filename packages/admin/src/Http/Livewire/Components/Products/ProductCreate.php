@@ -9,7 +9,8 @@ use Lunar\Models\TaxClass;
 
 class ProductCreate extends AbstractProduct
 {
-    public $limitReached = null;
+    public $error_message = null;
+
     /**
      * Called when the component is mounted.
      *
@@ -18,18 +19,31 @@ class ProductCreate extends AbstractProduct
     public function mount()
     {
 
-        if(isset(\Auth::user()->brand_id)){
+        if (isset(\Auth::user()->brand_id)) {
             //ベンダーは15件のみ登録可能
-            $product_count= Product::where('brand_id', \Auth::user()->brand_id)
+            $product_count = Product::where('brand_id', \Auth::user()->brand_id)
                 ->whereNull('deleted_at')->count();
             ray($product_count);
-            if($product_count>= 15){
+
+            //  ray(\Auth::user()->brand->plan_id)->label('dfdfd');
+            if (is_null(\Auth::user()->brand->plan_id)) {
                 $this->notify(
-                    '商品は15件のみ登録可能です。',
+                    'プランが未設定です。',
                     level: 'error'
                 );
-                $this->limitReached=15;
+                $this->error_message = "プランが未設定です";
+            } else {
+                $vendor_plans = \App\Models\VendorPlan::find(\Auth::user()->brand->plan_id);
+
+                if ($product_count >= $vendor_plans->limit) {
+                    $this->notify(
+                        '現状のプランでは商品は' . $vendor_plans->limit . '件のみ登録可能です。',
+                        level: 'error'
+                    );
+                    $this->error_message = '現状のプランでは商品は' . $vendor_plans->limit . '件のみ登録可能です。';
+                }
             }
+
         }
 
         $this->product = new Product([

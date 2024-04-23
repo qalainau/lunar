@@ -10,22 +10,23 @@ class ProductsTableBuilder extends TableBuilder
     /**
      * Return the query data.
      *
-     * @param  string|null  $searchTerm
-     * @param  array  $filters
-     * @param  string  $sortField
-     * @param  string  $sortDir
+     * @param string|null $searchTerm
+     * @param array $filters
+     * @param string $sortField
+     * @param string $sortDir
      * @return LengthAwarePaginator
      */
     public function getData(): iterable
     {
 
-        if(\Auth::user()->brand_id){
-            $query = Product::where('brand_id',\Auth::user()->brand_id)->orderBy($this->sortField, $this->sortDir)
-                ->withTrashed();
-        }
-        else{
-            $query = Product::orderBy($this->sortField, $this->sortDir)
-                ->withTrashed();
+        if (\Auth::user()->brand_id) {
+//            $query = Product::where('brand_id',\Auth::user()->brand_id)->orderBy($this->sortField, $this->sortDir)
+//                ->withTrashed();
+            $query = Product::where('brand_id', \Auth::user()->brand_id)->orderBy($this->sortField, $this->sortDir);
+        } else {
+//            $query = Product::orderBy($this->sortField, $this->sortDir)
+//                ->withTrashed();
+            $query = Product::orderBy($this->sortField, $this->sortDir);
         }
 
 
@@ -34,7 +35,7 @@ class ProductsTableBuilder extends TableBuilder
         }
 
         $filters = collect($this->queryStringFilters)->filter(function ($value) {
-            return (bool) $value;
+            return (bool)$value;
         });
 
         foreach ($this->queryExtenders as $qe) {

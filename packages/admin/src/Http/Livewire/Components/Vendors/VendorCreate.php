@@ -3,6 +3,7 @@
 namespace Lunar\Hub\Http\Livewire\Components\Vendors;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Lunar\Hub\Auth\Manifest;
 use Lunar\Hub\Models\Staff;
 
@@ -18,6 +19,7 @@ class VendorCreate extends AbstractStaff
         $this->staff = new Staff();
         $this->staffPermissions = $this->staff->permissions->pluck('handle');
         $this->carrier_id = 0;
+        $this->plan_id = null;
     }
 
     /**
@@ -29,9 +31,13 @@ class VendorCreate extends AbstractStaff
     {
         return [
             'staffPermissions' => 'array',
-            'staff.email' => 'required|email|unique:' . get_class($this->staff) . ',email',
+            //  'staff.email' => 'required|email|unique:' . get_class($this->staff) . ',email,deleted_at,NULL',
+            'staff.email' => ['required', 'email', Rule::unique('lunar_staff', 'email')->where(static function ($query) {
+                return $query->whereNull('deleted_at');
+            })],
             'staff.firstname' => 'string|max:255',
-            'staff.company_name' => 'string|max:255',
+            'staff.company_name' => 'string|max:255|nullable',
+            'staff.member_name' => 'string|max:255|nullable',
             'staff.lastname' => 'required|string|max:255',
             'staff.phone_number' => 'string|max:255',
             'staff.address' => 'string|max:255',
@@ -41,6 +47,7 @@ class VendorCreate extends AbstractStaff
             'password_confirmation' => 'string',
             'branch_id' => 'required|integer',
             'carrier_id' => 'required|integer',
+            'plan_id' => 'required|integer',
         ];
     }
 
@@ -65,6 +72,7 @@ class VendorCreate extends AbstractStaff
             'name' => $this->staff->lastname,
             'branch_id' => $this->branch_id,
             'carrier_id' => $this->carrier_id,
+            'plan_id' => $this->plan_id,
         ]);
         $brand->save();
         $this->staff->brand_id = $brand->id;

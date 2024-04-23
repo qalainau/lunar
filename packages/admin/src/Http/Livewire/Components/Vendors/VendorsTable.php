@@ -55,7 +55,7 @@ class VendorsTable extends LunarTable
                 return route('hub.vendors.show', $record->id);
             }),
             TextColumn::make('company_name')->heading('会社名'),
-            TextColumn::make('first_name')->heading('会員氏名'),
+            TextColumn::make('member_name')->heading('会員氏名'),
             TextColumn::make('email'),
             TextColumn::make('brand_id')->heading('ベンダーID'),
         ]);
@@ -127,7 +127,7 @@ class VendorsTable extends LunarTable
      */
     public function getData()
     {
-        $query = Staff::query();
+        $query = Staff::query()->whereNull('deleted_at');
 
         if ($this->query) {
             $query->search($this->query, true);
