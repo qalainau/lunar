@@ -208,22 +208,12 @@ class ReportsIndex extends Component implements Tables\Contracts\HasTable
                 ])->join(',');
             })->toArray();
         ray($order_reports);
-//        $orders = Order::findMany($orderIds)->map(function ($order) {
-//            return collect([
-//                $order->id,
-//                $order->status,
-//                $order->reference,
-//                $order->billingAddress->full_name,
-//                $order->total->decimal,
-//                $order->created_at->format('Y-m-d'),
-//                $order->created_at->format('H:ma'),
-//            ])->join(',');
-//        })->toArray();
+
 
         $data = collect(array_merge($data, $order_reports))->join("\n");
-//        return response()->streamDownload(function () {
-//            echo 'CSV Contents...';
-//        }, 'export.csv');
+
+        $data = mb_convert_encoding($data, 'sjis-win', 'utf-8');
+
         Storage::put('report_export.csv', $data);
 
         return Storage::download('report_export.csv');
