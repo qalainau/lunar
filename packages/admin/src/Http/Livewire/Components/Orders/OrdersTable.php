@@ -167,7 +167,7 @@ class OrdersTable extends Table
                         );
                     }
                     if (\Auth::user()->brand_id) {
-                        $vendors = \Lunar\Models\Brand::where('id', \Auth::user()->id)->get();
+                        $vendors = \Lunar\Models\Brand::where('id', \Auth::user()->brand_id)->get();
                         $brand_ids = [];
                         foreach ($vendors as $vendor) {
                             $brand_ids[] = $vendor->id;
